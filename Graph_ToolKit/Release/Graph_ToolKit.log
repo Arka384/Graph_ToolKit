@@ -1,18 +1,7 @@
-﻿  main.cpp
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(515): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(523): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(531): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(539): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(556): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(564): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(572): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(580): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(639): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\graph_toolkit\graph_toolkit\main.cpp(647): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+﻿  File_IO.cpp
   Generating code
-  0 of 510 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 521 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\TESTS\Graph_ToolKit\Release\Graph_ToolKit.exe
+  Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\Graph_ToolKit.exe

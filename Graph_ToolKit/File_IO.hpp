@@ -11,7 +11,8 @@ public:
 	int adj_matrix[max][max] = { 0 };
 	int matrixBaseIndex = 0;
 
-	void create_adj_matrix(std::list<Edge> &edges, bool directed_graph, bool startFromZero);
+	void create_adj_matrix(VertexManager &V, EdgeManager &E);
+	std::string matrixToString(int current_vertices, bool startFromZero);
 	void writeInFile(int current_vertices);
 	void readFromFile(bool startFromZero);
 	void constructGraph(VertexManager &V, EdgeManager &E);

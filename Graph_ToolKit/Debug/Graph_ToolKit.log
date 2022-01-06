@@ -1,0 +1,13 @@
+﻿  main.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(544): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(552): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(560): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(568): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(585): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(593): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(601): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(609): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(668): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(676): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+  Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Debug\Graph_ToolKit.exe

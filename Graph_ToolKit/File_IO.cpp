@@ -1,8 +1,8 @@
 #include "File_IO.hpp"
 
-void File_IO::create_adj_matrix(std::list<Edge>& edges, bool directed_graph, bool startFromZero)
+void File_IO::create_adj_matrix(VertexManager &V, EdgeManager &E)
 {
-	if (edges.size() == 0)
+	if (E.edges.size() == 0)
 		return;
 
 	for (int i = 0; i < max; i++) {
@@ -10,8 +10,8 @@ void File_IO::create_adj_matrix(std::list<Edge>& edges, bool directed_graph, boo
 			adj_matrix[i][j] = 0;
 	}
 
-	for (auto i = edges.begin(); i != edges.end(); i++) {
-		if (directed_graph)
+	for (auto i = E.edges.begin(); i != E.edges.end(); i++) {
+		if (E.directedGraph)
 			adj_matrix[i->v1][i->v2] = i->weight;
 		else {
 			adj_matrix[i->v1][i->v2] = i->weight;
@@ -20,9 +20,32 @@ void File_IO::create_adj_matrix(std::list<Edge>& edges, bool directed_graph, boo
 	}
 
 	matrixBaseIndex = 1;
-	if (startFromZero)
+	if (V.startFromZero)
 		matrixBaseIndex = 0;
 
+}
+
+std::string File_IO::matrixToString(int current_vertices, bool startFromZero)
+{
+	std::string matrixString;
+	for (int i = matrixBaseIndex; i <= current_vertices; i++)
+	{
+		for (int j = matrixBaseIndex; j <= current_vertices; j++) {
+			std::stringstream ss;
+			ss << adj_matrix[i][j];
+			matrixString.append(ss.str());
+			matrixString.append(" ");
+		}
+		matrixString.append("\n");
+	}
+
+	std::stringstream ss;
+	if(startFromZero) ss << current_vertices + 1;
+	else ss << current_vertices;
+	matrixString.append("\nNumber of Vertices: ");
+	matrixString.append(ss.str());
+
+	return matrixString;
 }
 
 void File_IO::writeInFile(int current_vertices)

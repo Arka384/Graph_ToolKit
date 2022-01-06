@@ -2,11 +2,7 @@
 #include "Utils.hpp"
 
 /*
-TO DO:
-	1 -> Implement a way so that the profile is not loded for the first time in new device
-		Once the new device saves a profile load it from the next times.
 
-	2 -> Find more bugs and finishing touches
 */
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
@@ -25,6 +21,7 @@ HWND CheckBox_V_scatter;
 //visualisation settings window handlers
 HWND VisualSettingWindow, B_VS_Save;
 HWND COMBO_VS_Colour, COMBO_VS_Speed;
+HWND ShowMatrixWindow, SM_textbox, B_SM_Close;
 
 //graph settings window handlers
 HWND SettingWindow;	//child window
@@ -41,6 +38,7 @@ bool ChildClosed = false;
 bool ChildWindowOpen = false;
 bool editorWindowOpen = false;
 bool VsSettingsOpen = false;
+bool SmWindowOpen = false;
 
 const TCHAR *colors[] = { TEXT("Red"), TEXT("Dark Gold"), TEXT("Green"), TEXT("Teal"), TEXT("Purple"), TEXT("Lemon Chiffon"),
 TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black") };
@@ -62,6 +60,9 @@ bool EdgeSynch = false;
 int deletedVertex = 0;
 float dt = 0;
 float timer = 0;
+///////
+std::string adjString;
+///////
 sf::Color selectColour(int index);
 float selectSize(int index);
 float selectVertexSize(int index);
@@ -108,6 +109,7 @@ void addMenu(HWND hwnd) {
 	//creating visualization menu
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALIZEBFS, "Visualize BFS");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALIZEDFS, "Visualize DFS");
+	AppendMenu(VisualizationMenu, MF_STRING, ID_SHOWMATRIX, "View Adjcent Matrix");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALSETTINGS, "Settings");
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)VisualizationMenu, "Visualization");
 
@@ -174,7 +176,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			id = MessageBox(handle, TEXT("Do you wish to save the current graph ?"), TEXT("Warning"), MB_YESNO);
 			if (id == 7)
 				break;
-			FIO.create_adj_matrix(E.edges, E.directedGraph, V.startFromZero);
+			FIO.create_adj_matrix(V, E);
 			FIO.writeInFile(V.current_vertices);
 			break;
 		case ID_IMPORT:
@@ -190,12 +192,26 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 
 			//visualization tools and menu handles
 		case ID_VISUALIZEBFS:
-			FIO.create_adj_matrix(E.edges, E.directedGraph, V.startFromZero);
+			FIO.create_adj_matrix(V, E);
 			ThreadBfs = CreateThread(0, 0, BFS, NULL, 0, NULL);
 			break;
 		case ID_VISUALIZEDFS:
-			FIO.create_adj_matrix(E.edges, E.directedGraph, V.startFromZero);
+			FIO.create_adj_matrix(V, E);
 			ThreadDfs = CreateThread(0, 0, DFS, NULL, 0, NULL);
+			break;
+		case ID_SHOWMATRIX:
+			FIO.create_adj_matrix(V, E);
+			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero);
+			SetWindowText(SM_textbox, adjString.c_str());
+
+			if (!SmWindowOpen) {
+				ShowWindow(ShowMatrixWindow, SW_SHOWNORMAL);
+				SmWindowOpen = true;
+			}
+			else {
+				ShowWindow(ShowMatrixWindow, SW_HIDE);
+				SmWindowOpen = false;
+			}
 			break;
 		case ID_VISUALSETTINGS:
 			if (!editorWindowOpen) {
@@ -383,6 +399,15 @@ LRESULT CALLBACK VSProcessedMessage(HWND handle, UINT message, WPARAM wparam, LP
 	return DefWindowProc(handle, message, wparam, lparam);
 }
 
+LRESULT CALLBACK ShowMatProcessedMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
+	if (message == WM_COMMAND) {
+		if (wparam == ID_SM_CLOSE) {
+			SmWindowOpen = false;
+			ShowWindow(ShowMatrixWindow, SW_HIDE);
+		}
+	}
+	return DefWindowProc(handle, message, wparam, lparam);
+}
 
 
 int main()
@@ -649,6 +674,30 @@ int main()
 	B_EditorClose = CreateWindow(TEXT("BUTTON"), TEXT("Save"), WS_VISIBLE | WS_CHILD | WS_BORDER, 335, 200, 80, 40, VisualSettingWindow,
 		(HMENU)ID_VISUALCLOSE, instance, NULL);
 
+	/////////////////////////////////////////////////
+	//Show matirx window
+	WNDCLASS VS_ShowMatrix;
+	VS_ShowMatrix.cbClsExtra = 0;
+	VS_ShowMatrix.cbWndExtra = 0;
+	VS_ShowMatrix.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	VS_ShowMatrix.hCursor = 0;
+	VS_ShowMatrix.hIcon = NULL;
+	VS_ShowMatrix.hInstance = instance;
+	VS_ShowMatrix.lpfnWndProc = &ShowMatProcessedMessage;
+	VS_ShowMatrix.lpszClassName = TEXT("VS_Show_Matrix");
+	VS_ShowMatrix.lpszMenuName = NULL;
+	VS_ShowMatrix.style = 0;
+	RegisterClass(&VS_ShowMatrix);
+
+	ShowMatrixWindow = CreateWindow(TEXT("VS_Show_Matrix"), TEXT("Adjacent Matrix"), WS_VISIBLE, 500, 200,
+		400, 400, NULL, NULL, instance, NULL);
+	ShowWindow(ShowMatrixWindow, SW_HIDE);
+
+	SM_textbox = CreateWindow(TEXT("STATIC"), TEXT("sdfsdfsd"), WS_VISIBLE | WS_CHILD | WS_BORDER, 10, 10, 360, 290, ShowMatrixWindow,
+		NULL, instance, NULL);
+
+	B_SM_Close = CreateWindow(TEXT("BUTTON"), TEXT("Close"), WS_VISIBLE | WS_CHILD | WS_BORDER, 10, 315,
+		363, 30, ShowMatrixWindow, (HMENU)ID_SM_CLOSE, instance, NULL);
 
 	/////////////////////////////////////////////////
 	////////////////////////////////////////////////
