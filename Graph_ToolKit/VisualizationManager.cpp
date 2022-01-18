@@ -2,12 +2,23 @@
 
 VisualizationManager::VisualizationManager(void)
 {
+	traverseTex.loadFromFile("res/traversal.png");
+	traverseImage.setTexture(traverseTex);
+	//traverseImage.setScale(1.5, 1.5);
+	traverseImage.setPosition(0, 610);
+	traverseText.setPosition(230, 610);
+	traverseStatusTex.loadFromFile("res/traverse_status.png");
+	traverseStatus.setTexture(traverseStatusTex);
+	traverseStatus.setPosition(920, 10);
+
 	tex.loadFromFile("res/inprogress.png");
 	statusImage.setTexture(tex);
-	statusImage.setPosition(800, 20);
+	statusImage.setPosition(900, 10);
 	font.loadFromFile("res/my_font.ttf");
 	statusText.setFont(font);
 	statusText.setCharacterSize(20.f);
+	traverseText.setFont(font);
+	traverseText.setCharacterSize(20.f);
 	//to make non zero size
 	queue.push_back(s);
 	stack.push_back(s);
@@ -19,10 +30,10 @@ void VisualizationManager::reset(VertexManager &v)
 		k->shape.setFillColor(v.vertexColor);
 	queue.push_back(s);
 	stack.push_back(s);
-	for (int i = 0; i < 20; i++)
+	traverse.clear();
+	for (int i = 0; i < maxSize; i++)
 		visited[i] = false;
 	executed = false;
-	onProgress = false;
 	show_statusText = false;
 }
 
@@ -37,6 +48,7 @@ void VisualizationManager::bfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeMa
 	}
 
 	int x = queue.front();
+	traverse.push_back(x);
 
 	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
 		if (k->numbering == x)
@@ -68,6 +80,7 @@ void VisualizationManager::dfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeMa
 	int i;
 
 	int x = stack.back();
+	traverse.push_back(x);
 
 	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
 		if (k->numbering == x)
@@ -99,6 +112,22 @@ void VisualizationManager::dfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeMa
 
 }
 
+void VisualizationManager::getTraversed(void)
+{
+	onProgress = false;
+	showingTraverse = true;
+	std::string traverseString = "";
+	for (auto i = traverse.begin(); i != traverse.end(); i++) {
+		std::stringstream sstream;
+		sstream << *i;
+		traverseString.append(sstream.str());
+		if(traverse.back() != *i)
+			traverseString.append("->");
+	}
+
+	traverseText.setString(traverseString);
+}
+
 void VisualizationManager::changeHighlightColour(sf::Color colour)
 {
 	highlightColour = colour;
@@ -122,8 +151,15 @@ int VisualizationManager::getStackSize(void)
 void VisualizationManager::displayStatus(sf::RenderWindow & window)
 {
 	if (onProgress) {
-		window.draw(statusImage);
+		window.draw(statusImage);	
 	}
+
+	if(showingTraverse){
+		window.draw(traverseStatus);
+		window.draw(traverseImage);
+		window.draw(traverseText);
+	}
+
 	if (show_statusText)
 		window.draw(statusText);
 }

@@ -2,7 +2,8 @@
 #include "Utils.hpp"
 
 /*
-
+	add a background colour which exapnds upon the length of the traversal string
+	and display the texts over the background
 */
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
@@ -77,6 +78,9 @@ DWORD WINAPI BFS(LPVOID param) {
 		VisualM.bfs(FIO.adj_matrix, V, E, FIO.matrixBaseIndex, dt);
 		sf::sleep(sf::milliseconds(VisualM.sleepTime));
 	}
+	VisualM.getTraversed();
+	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
+	VisualM.showingTraverse = false;
 	VisualM.reset(V);
 	return 0;
 }
@@ -87,6 +91,9 @@ DWORD WINAPI DFS(LPVOID param) {
 		VisualM.dfs(FIO.adj_matrix, V, E, FIO.matrixBaseIndex, dt);
 		sf::sleep(sf::milliseconds(VisualM.sleepTime));
 	}
+	VisualM.getTraversed();
+	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
+	VisualM.showingTraverse = false;
 	VisualM.reset(V);
 	return 0;
 }

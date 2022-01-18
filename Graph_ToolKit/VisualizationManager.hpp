@@ -3,9 +3,9 @@
 class VisualizationManager
 {
 private:
-	sf::Sprite statusImage;
-	sf::Texture tex;
-	sf::Text statusText;
+	sf::Sprite statusImage, traverseImage, traverseStatus;
+	sf::Texture tex, traverseTex, traverseStatusTex;
+	sf::Text statusText, traverseText;
 	sf::Font font;
 	std::string statusString = "Backtracking from: ";
 	sf::Color highlightColour = sf::Color::Yellow;
@@ -13,18 +13,22 @@ private:
 	int s = 0;
 	std::list<int> queue;
 	std::list<int> stack;
-	bool visited[20] = { false };
+	int maxSize = 30;
+	bool visited[30] = { false };
 	bool executed = false;
 
 public:
 	int sleepTime = 1000;
 	bool onProgress = false;
+	bool showingTraverse = false;
 	bool show_statusText = false;
+	std::list<int> traverse;
 
 	VisualizationManager(void);
 	void reset(VertexManager &v);
 	void bfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
 	void dfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
+	void getTraversed(void);
 	void changeHighlightColour(sf::Color colour);
 	void changeSpeed(int speed);
 	int getQueueSize(void);
