@@ -2,8 +2,7 @@
 #include "Utils.hpp"
 
 /*
-	add a background colour which exapnds upon the length of the traversal string
-	and display the texts over the background
+	
 */
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
@@ -49,7 +48,8 @@ const TCHAR *edgeSizes[] = { TEXT("5"), TEXT("10"), TEXT("15") };
 const TCHAR *speed[] = { TEXT("Fast"), TEXT("Medium"), TEXT("Slow") };
 TCHAR tempText[256];
 int selected = 0;
-int currentProfile[10] = { 0 };
+const int profileSize = 11;
+int currentProfile[profileSize] = { 0 };
 
 VertexManager V;
 EdgeManager E;
@@ -69,6 +69,7 @@ float selectSize(int index);
 float selectVertexSize(int index);
 float selectEdgeSize(int index);
 int selectSpeed(int index);
+void getTextHeight(HWND handle);
 
 //thread handlers and functions
 HANDLE ThreadBfs, ThreadDfs;
@@ -210,6 +211,8 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			FIO.create_adj_matrix(V, E);
 			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero);
 			SetWindowText(SM_textbox, adjString.c_str());
+			//resize that window and controls according to the text string 
+			getTextHeight(SM_textbox);
 
 			if (!SmWindowOpen) {
 				ShowWindow(ShowMatrixWindow, SW_SHOWNORMAL);
@@ -290,7 +293,7 @@ LRESULT CALLBACK EditorProcessMessages(HWND handle, UINT message, WPARAM wparam,
 	switch (message)
 	{
 	case WM_CREATE:
-		FIO.loadLastProfile(currentProfile, 10);
+		FIO.loadLastProfile(currentProfile, profileSize);
 		restoreProfile();
 		//setting appropriate text for newly resotred profile is set in main for each combobox.
 		break;
@@ -356,12 +359,13 @@ LRESULT CALLBACK EditorProcessMessages(HWND handle, UINT message, WPARAM wparam,
 		{
 		case ID_EDITORCLOSE:
 			//save the profile
-			FIO.saveCurrentProfile(currentProfile, 10);
+			FIO.saveCurrentProfile(currentProfile, profileSize);
 			ShowWindow(EditorWindow, SW_HIDE);
 			editorWindowOpen = false;
 			break;
 		case ID_SCATTERVERTICES:
 			V.isScattered = IsDlgButtonChecked(handle, ID_SCATTERVERTICES);
+			currentProfile[10] = (V.isScattered) ? 1 : 0;
 			break;
 		default:
 			break;
@@ -394,7 +398,7 @@ LRESULT CALLBACK VSProcessedMessage(HWND handle, UINT message, WPARAM wparam, LP
 
 		if (wparam == ID_VISUALCLOSE) {
 			//save profile for these too...
-			FIO.saveCurrentProfile(currentProfile, 10);
+			FIO.saveCurrentProfile(currentProfile, profileSize);
 			ShowWindow(VisualSettingWindow, SW_HIDE);
 			VsSettingsOpen = false;
 		}
@@ -407,15 +411,45 @@ LRESULT CALLBACK VSProcessedMessage(HWND handle, UINT message, WPARAM wparam, LP
 }
 
 LRESULT CALLBACK ShowMatProcessedMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
-	if (message == WM_COMMAND) {
+	
+	switch (message)
+	{
+	case WM_COMMAND:
 		if (wparam == ID_SM_CLOSE) {
 			SmWindowOpen = false;
 			ShowWindow(ShowMatrixWindow, SW_HIDE);
 		}
+		break;
+	default:
+		break;
 	}
-	return DefWindowProc(handle, message, wparam, lparam);
+
+	return DefWindowProc(handle, message, wparam, lparam);	
 }
 
+void getTextHeight(HWND handle) {
+
+	HDC hdc;
+	TEXTMETRIC textMetrics;
+	SCROLLINFO sInfo;
+	int TextHeight;
+	int TextWidth;
+	int ParentWidth = 400;
+
+	hdc = GetDC(handle);
+	GetTextMetrics(hdc, &textMetrics);
+	TextHeight = textMetrics.tmHeight * V.current_vertices;
+	TextWidth = (textMetrics.tmWeight * V.current_vertices)/40;	//approximate
+	ReleaseDC(handle, hdc);
+	
+	if (TextWidth > ParentWidth)
+		ParentWidth = TextWidth;
+
+	SetWindowPos(ShowMatrixWindow, NULL, 500, 200, ParentWidth, TextHeight + 100, NULL);
+	SetWindowPos(SM_textbox, NULL, 10, 10, ParentWidth - 40, TextHeight +2, NULL);
+	SetWindowPos(B_SM_Close, NULL, 10, TextHeight + 17, ParentWidth - 40, 30, NULL);
+
+}
 
 int main()
 {
@@ -529,7 +563,8 @@ int main()
 		(HMENU)ID_EDITORCLOSE, instance, NULL);
 	CheckBox_V_scatter = CreateWindow(TEXT("BUTTON"), TEXT("Scattered mode"), WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX, 10, 420, 160, 30,
 		EditorWindow, (HMENU)ID_SCATTERVERTICES, instance, NULL);
-
+	if(currentProfile[10] == 1)
+		SendMessage(CheckBox_V_scatter, BM_SETCHECK, BST_CHECKED, 0);
 
 	//vertex editor
 	HWND LB_VertexOptions = CreateWindow(TEXT("STATIC"), TEXT("Vertex Editor"), WS_VISIBLE | WS_CHILD, 8, 2, 120, 20, EditorWindow,
@@ -700,14 +735,14 @@ int main()
 		400, 400, NULL, NULL, instance, NULL);
 	ShowWindow(ShowMatrixWindow, SW_HIDE);
 
-	SM_textbox = CreateWindow(TEXT("STATIC"), TEXT("sdfsdfsd"), WS_VISIBLE | WS_CHILD | WS_BORDER, 10, 10, 360, 290, ShowMatrixWindow,
-		NULL, instance, NULL);
+	SM_textbox = CreateWindow(TEXT("STATIC"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 
+		10, 10, 360, 290, ShowMatrixWindow, NULL, instance, NULL);
 
 	B_SM_Close = CreateWindow(TEXT("BUTTON"), TEXT("Close"), WS_VISIBLE | WS_CHILD | WS_BORDER, 10, 315,
 		363, 30, ShowMatrixWindow, (HMENU)ID_SM_CLOSE, instance, NULL);
 
 	/////////////////////////////////////////////////
-	////////////////////////////////////////////////
+	//////////////////event loop/////////////////////
 	MSG message;
 	message.message = static_cast<UINT>(~WM_QUIT);
 	while (!ParentClosed) {
@@ -748,6 +783,7 @@ void restoreProfile(void) {
 	E.changeWeightFontSize(selectSize(currentProfile[7]));
 	VisualM.changeHighlightColour(selectColour(currentProfile[8]));
 	VisualM.changeSpeed(selectSpeed(currentProfile[9]));
+	V.isScattered = (currentProfile[10] == 1) ? true : false;
 }
 
 sf::Color selectColour(int index)

@@ -37,7 +37,7 @@ void VisualizationManager::reset(VertexManager &v)
 	show_statusText = false;
 }
 
-void VisualizationManager::bfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeManager &e, int baseIndex, float dt)
+void VisualizationManager::bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt)
 {
 	if (!executed) {
 		s = baseIndex;
@@ -67,7 +67,7 @@ void VisualizationManager::bfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeMa
 	}
 }
 
-void VisualizationManager::dfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeManager &e, int baseIndex, float dt)
+void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt)
 {
 	if (!executed) {
 		s = baseIndex;

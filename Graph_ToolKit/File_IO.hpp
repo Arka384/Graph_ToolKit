@@ -1,10 +1,13 @@
 #pragma once
 #include "EdgeManager.hpp"
 #include <fstream>
+constexpr int GL_ArraySize = 30;
+
 class File_IO
 {
 private:
-	static const int max = 20;
+	
+	static const int max = GL_ArraySize;
 	int vertex_count = 0;
 
 public:

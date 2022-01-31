@@ -13,7 +13,7 @@ private:
 	int s = 0;
 	std::list<int> queue;
 	std::list<int> stack;
-	int maxSize = 30;
+	static const int maxSize = GL_ArraySize;
 	bool visited[30] = { false };
 	bool executed = false;
 
@@ -26,8 +26,8 @@ public:
 
 	VisualizationManager(void);
 	void reset(VertexManager &v);
-	void bfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
-	void dfs(int(&adjMatrix)[20][20], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
+	void bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
+	void dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
 	void getTraversed(void);
 	void changeHighlightColour(sf::Color colour);
 	void changeSpeed(int speed);
