@@ -1,7 +1,7 @@
 #pragma once
 #include "EdgeManager.hpp"
 #include <fstream>
-constexpr int GL_ArraySize = 30;
+constexpr int GL_ArraySize = 40;
 
 class File_IO
 {
@@ -16,6 +16,7 @@ public:
 
 	void create_adj_matrix(VertexManager &V, EdgeManager &E);
 	std::string matrixToString(int current_vertices, bool startFromZero);
+	void reset(void);
 	void writeInFile(int current_vertices);
 	void readFromFile(bool startFromZero);
 	void constructGraph(VertexManager &V, EdgeManager &E);

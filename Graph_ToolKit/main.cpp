@@ -208,6 +208,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			ThreadDfs = CreateThread(0, 0, DFS, NULL, 0, NULL);
 			break;
 		case ID_SHOWMATRIX:
+			FIO.reset();
 			FIO.create_adj_matrix(V, E);
 			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero);
 			SetWindowText(SM_textbox, adjString.c_str());

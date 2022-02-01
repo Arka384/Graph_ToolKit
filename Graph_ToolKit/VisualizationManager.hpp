@@ -14,7 +14,7 @@ private:
 	std::list<int> queue;
 	std::list<int> stack;
 	static const int maxSize = GL_ArraySize;
-	bool visited[30] = { false };
+	bool visited[maxSize] = { false };
 	bool executed = false;
 
 public:

@@ -48,6 +48,13 @@ std::string File_IO::matrixToString(int current_vertices, bool startFromZero)
 	return matrixString;
 }
 
+void File_IO::reset() {
+	for (int i = 0; i < max; i++) {
+		for (int j = 0; j < max; j++)
+			adj_matrix[i][j] = 0;
+	}
+}
+
 void File_IO::writeInFile(int current_vertices)
 {
 	std::ofstream output("output.txt");
