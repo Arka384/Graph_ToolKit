@@ -25,9 +25,20 @@ void File_IO::create_adj_matrix(VertexManager &V, EdgeManager &E)
 
 }
 
-std::string File_IO::matrixToString(int current_vertices, bool startFromZero)
+std::string File_IO::matrixToString(int current_vertices, bool startFromZero, bool usingAlpha)
 {
 	std::string matrixString;
+	/*
+	if (usingAlpha) {
+		//writing alphabets
+		for (int i = matrixBaseIndex; i <= current_vertices; i++) {
+			std::stringstream s;
+			s << (char)(i + 65);
+			matrixString.append(s.str());
+		}
+		matrixString.append("\n");
+	}*/
+
 	for (int i = matrixBaseIndex; i <= current_vertices; i++)
 	{
 		for (int j = matrixBaseIndex; j <= current_vertices; j++) {

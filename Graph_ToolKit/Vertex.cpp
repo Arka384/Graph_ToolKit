@@ -19,4 +19,5 @@ Vertex::Vertex(sf::Text name, int numbering, sf::Color vertexColor, float vertex
 		shape.setPosition(std::rand() % 900 + 100, std::rand() % 400 + 100);
 
 	this->name.setPosition(this->shape.getPosition().x - 5, this->shape.getPosition().y - 5);
+
 }

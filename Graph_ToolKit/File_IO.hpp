@@ -15,7 +15,7 @@ public:
 	int matrixBaseIndex = 0;
 
 	void create_adj_matrix(VertexManager &V, EdgeManager &E);
-	std::string matrixToString(int current_vertices, bool startFromZero);
+	std::string matrixToString(int current_vertices, bool startFromZero, bool usingAlpha);
 	void reset(void);
 	void writeInFile(int current_vertices);
 	void readFromFile(bool startFromZero);

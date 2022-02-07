@@ -64,6 +64,9 @@ float timer = 0;
 ///////
 std::string adjString;
 ///////
+//window class creating function
+void setWindowClassParam(WNDCLASS &wndClass, HINSTANCE currInstance);
+///////////
 sf::Color selectColour(int index);
 float selectSize(int index);
 float selectVertexSize(int index);
@@ -210,7 +213,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 		case ID_SHOWMATRIX:
 			FIO.reset();
 			FIO.create_adj_matrix(V, E);
-			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero);
+			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero, V.usingAlpha);
 			SetWindowText(SM_textbox, adjString.c_str());
 			//resize that window and controls according to the text string 
 			getTextHeight(SM_textbox);
@@ -452,25 +455,30 @@ void getTextHeight(HWND handle) {
 
 }
 
+//window class creating function
+void setWindowClassParam(WNDCLASS &wndClass, HINSTANCE currInstance) {
+	wndClass.cbClsExtra = 0;
+	wndClass.cbWndExtra = 0;
+	wndClass.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wndClass.hCursor = 0;
+	wndClass.hIcon = NULL;
+	wndClass.hInstance = currInstance;
+	wndClass.lpszMenuName = NULL;
+	wndClass.style = 0;
+}
+
 int main()
 {
 	HINSTANCE instance = GetModuleHandle(NULL);
 
 	WNDCLASS windowClass;
-	windowClass.cbClsExtra = 0;
-	windowClass.cbWndExtra = 0;
-	windowClass.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	windowClass.hCursor = 0;
-	windowClass.hIcon = NULL;
-	windowClass.hInstance = instance;
+	setWindowClassParam(windowClass, instance);
 	windowClass.lpfnWndProc = &ProcessMessageMain;
 	windowClass.lpszClassName = TEXT("SFML_APP");
-	windowClass.lpszMenuName = NULL;
-	windowClass.style = 0;
 	RegisterClass(&windowClass);
 
 	//main win32 app window
-	HWND window = CreateWindow(TEXT("SFML_APP"), TEXT("Sfml Win32"), WS_VISIBLE | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
+	HWND window = CreateWindow(TEXT("SFML_APP"), TEXT("Graph_Toolkit"), WS_VISIBLE | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
 		win32WindowSize.x, win32WindowSize.y, NULL, NULL, instance, NULL);
 	SetWindowLong(window, GWL_STYLE, GetWindowLong(window, GWL_STYLE) | WS_MINIMIZEBOX);
 	//sfml window
@@ -545,16 +553,9 @@ int main()
 	//////////////////////////////////////////////////////////////////////
 	///////////////editor window
 	WNDCLASS editorClass;
-	editorClass.cbClsExtra = 0;
-	editorClass.cbWndExtra = 0;
-	editorClass.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	editorClass.hCursor = 0;
-	editorClass.hIcon = NULL;
-	editorClass.hInstance = instance;
+	setWindowClassParam(editorClass, instance);
 	editorClass.lpfnWndProc = &EditorProcessMessages;
 	editorClass.lpszClassName = TEXT("Editor_class");
-	editorClass.lpszMenuName = NULL;
-	editorClass.style = 0;
 	RegisterClass(&editorClass);
 
 	EditorWindow = CreateWindow(TEXT("Editor_class"), TEXT("Editor"), WS_VISIBLE, 500, 200,
@@ -651,16 +652,9 @@ int main()
 
 	//////////////////////////////////////////////////////////////////////
 	WNDCLASS ChildClass;
-	ChildClass.cbClsExtra = 0;
-	ChildClass.cbWndExtra = 0;
-	ChildClass.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	ChildClass.hCursor = 0;
-	ChildClass.hIcon = NULL;
-	ChildClass.hInstance = instance;
+	setWindowClassParam(ChildClass, instance);
 	ChildClass.lpfnWndProc = &SettingsProcessMessage;
 	ChildClass.lpszClassName = TEXT("Child_Class");
-	ChildClass.lpszMenuName = NULL;
-	ChildClass.style = 0;
 	RegisterClass(&ChildClass);
 
 	SettingWindow = CreateWindow(TEXT("Child_Class"), TEXT("Settings"), WS_VISIBLE, 500, 200,
@@ -682,16 +676,9 @@ int main()
 	///////////////////////////////
 	//visualisation settings
 	WNDCLASS VS_settings;
-	VS_settings.cbClsExtra = 0;
-	VS_settings.cbWndExtra = 0;
-	VS_settings.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	VS_settings.hCursor = 0;
-	VS_settings.hIcon = NULL;
-	VS_settings.hInstance = instance;
+	setWindowClassParam(VS_settings, instance);
 	VS_settings.lpfnWndProc = &VSProcessedMessage;
 	VS_settings.lpszClassName = TEXT("VS_Settings_Class");
-	VS_settings.lpszMenuName = NULL;
-	VS_settings.style = 0;
 	RegisterClass(&VS_settings);
 
 	VisualSettingWindow = CreateWindow(TEXT("VS_Settings_Class"), TEXT("Settings"), WS_VISIBLE, 500, 200,
@@ -720,16 +707,9 @@ int main()
 	/////////////////////////////////////////////////
 	//Show matirx window
 	WNDCLASS VS_ShowMatrix;
-	VS_ShowMatrix.cbClsExtra = 0;
-	VS_ShowMatrix.cbWndExtra = 0;
-	VS_ShowMatrix.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	VS_ShowMatrix.hCursor = 0;
-	VS_ShowMatrix.hIcon = NULL;
-	VS_ShowMatrix.hInstance = instance;
+	setWindowClassParam(VS_ShowMatrix, instance);
 	VS_ShowMatrix.lpfnWndProc = &ShowMatProcessedMessage;
 	VS_ShowMatrix.lpszClassName = TEXT("VS_Show_Matrix");
-	VS_ShowMatrix.lpszMenuName = NULL;
-	VS_ShowMatrix.style = 0;
 	RegisterClass(&VS_ShowMatrix);
 
 	ShowMatrixWindow = CreateWindow(TEXT("VS_Show_Matrix"), TEXT("Adjacent Matrix"), WS_VISIBLE, 500, 200,
