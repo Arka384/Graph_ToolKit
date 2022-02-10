@@ -48,11 +48,13 @@ void VisualizationManager::bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 	}
 
 	int x = queue.front();
-	traverse.push_back(x);
 
 	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
-		if (k->numbering == x)
+		if (k->numbering == x) {
 			k->shape.setFillColor(highlightColour);
+			traverse.push_back(*k);
+		}
+			
 	}
 
 	queue.pop_front();
@@ -74,28 +76,35 @@ void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 		visited[s] = true;
 		stack.clear();
 		stack.push_back(s);
+		traverse.push_back(v.vertices.front());
 		executed = true;
 	}
 
 	int i;
 
 	int x = stack.back();
-	traverse.push_back(x);
 
-	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
-		if (k->numbering == x)
-			k->shape.setFillColor(highlightColour);
+	if (!visited[x]) {
+		visited[x] = true;
+		for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
+			if (k->numbering == x) {
+				k->shape.setFillColor(highlightColour);
+				traverse.push_back(*k);
+			}
+		}
 	}
+	
 
 	for (i = baseIndex; i <= v.current_vertices; i++)
 	{
 		if (adjMatrix[x][i] == 1 && visited[i] == false)
 		{
 			stack.push_back(i);
-			visited[i] = true;
+			//visited[i] = true;
 			break;
 		}
 	}
+
 	if (i == v.current_vertices + 1) {
 		show_statusText = true;
 		int t = stack.back();
@@ -112,16 +121,110 @@ void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 
 }
 
+/*
+
+//this function gets the input for finding shortest paths
+/////modification needed
+	//only working for normal numbering and not with usingAlpha and StartFromZero
+void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha)
+{
+	src = dest = 0;
+	try {
+		if (usingAlpha) {
+			if (islower(*a) != 0)
+				*a = toupper(*a);
+			if (islower(*b) != 0)
+				*b = toupper(*b);
+			src = static_cast<int>(*a) - 64;
+			dest = static_cast<int>(*b) - 64;
+		}
+		else {
+			src = std::atoi(a);
+			dest = std::atoi(b);
+		}
+	}
+	catch (const std::invalid_argument &ex) {
+		std::cout << ex.what();
+	}
+
+	std::cout << src << " " << dest << "\n";
+
+}
+
+//this function uses bfs to find shortest path. Just a slight modification on the normal bfs
+void VisualizationManager::bfsPathFind(int(&adjMatrix)[maxSize][maxSize], VertexManager & v, EdgeManager & e, int baseIndex)
+{
+	if (!executed) {
+		visited[src] = true;
+		queue.clear();
+		queue.push_back(src);
+		executed = true;
+	}
+
+	int x = queue.front();
+	//traverse.push_back(x);
+	queue.pop_front();
+
+	for (int i = baseIndex; i <= v.current_vertices; i++)
+	{
+		if (adjMatrix[x][i] == 1 && visited[i] == false)
+		{
+			visited[i] = true;
+			queue.push_back(i);
+			pred[i] = x;
+		}
+	}
+
+	pred[src] = -1;
+	
+}
+
+//this function is to get the right path after using bfsPathFind
+void VisualizationManager::getPath(int * pred, VertexManager &v)
+{
+	showingTraverse = true;
+	int i = dest, pathLength = 0;
+	while (pred[i] != -1) {
+		path[pathLength++] = i;
+		i = pred[i];
+	}
+	path[pathLength++] = i;
+	//now reverse the path as it was already in reversed order for ease of calculation
+	std::reverse(path, path + pathLength);
+
+	//highlight the vertices
+	std::string pathString = "";
+	for (int i = 0; i < pathLength; i++) {
+		for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
+			if (k->numbering == path[i]) {
+				k->shape.setFillColor(highlightColour);
+				std::stringstream sstream;
+				sstream << k->numbering;
+				pathString.append(sstream.str());
+				break;
+			}
+		}
+		if (i < pathLength-1)
+			pathString.append("->");
+	}
+
+	traverseText.setString(pathString);
+}
+
+*/
+
 void VisualizationManager::getTraversed(void)
 {
 	onProgress = false;
 	showingTraverse = true;
 	std::string traverseString = "";
+	std::string temp = "";
 	for (auto i = traverse.begin(); i != traverse.end(); i++) {
 		std::stringstream sstream;
-		sstream << *i;
+		temp = i->name.getString();	//get the string form sf::Text
+		sstream << temp.c_str();	//pass the constant string
 		traverseString.append(sstream.str());
-		if(traverse.back() != *i)
+		//if(traverse.back() != *i)
 			traverseString.append("->");
 	}
 

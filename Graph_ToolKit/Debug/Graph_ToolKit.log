@@ -1,14 +1,15 @@
 ﻿  main.cpp
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(438): warning C4101: 'sInfo': unreferenced local variable
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(584): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(592): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(600): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(608): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(625): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(633): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(641): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(649): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(694): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(702): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(499): warning C4101: 'sInfo': unreferenced local variable
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(533): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(646): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(654): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(662): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(670): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(687): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(695): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(703): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(711): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(757): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(765): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
   Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Debug\Graph_ToolKit.exe

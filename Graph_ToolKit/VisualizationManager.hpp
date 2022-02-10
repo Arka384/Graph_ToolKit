@@ -11,9 +11,11 @@ private:
 	sf::Color highlightColour = sf::Color::Yellow;
 	float timer = 0, timeLimit = 0.2;
 	int s = 0;
+	int src = 0, dest = 0;	//for Shortest Path
 	std::list<int> queue;
 	std::list<int> stack;
 	static const int maxSize = GL_ArraySize;
+	
 	bool visited[maxSize] = { false };
 	bool executed = false;
 
@@ -22,12 +24,19 @@ public:
 	bool onProgress = false;
 	bool showingTraverse = false;
 	bool show_statusText = false;
-	std::list<int> traverse;
+	std::list<Vertex> traverse;
+	int pred[maxSize] = { -1 };
+	int path[maxSize] = { 0 };
+	int count = 0;
+
 
 	VisualizationManager(void);
 	void reset(VertexManager &v);
 	void bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
 	void dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
+	//void getInputSP(char *a, char *b, bool usingAlpha);
+	//void bfsPathFind(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex);
+	//void getPath(int *pred, VertexManager &v);
 	void getTraversed(void);
 	void changeHighlightColour(sf::Color colour);
 	void changeSpeed(int speed);

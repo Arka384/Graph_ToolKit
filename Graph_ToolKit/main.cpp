@@ -2,7 +2,13 @@
 #include "Utils.hpp"
 
 /*
-	
+	adding shortest path finding option
+		bfs path finding is working only for normal numbering
+		not working with UsingAlpha and StartFromZero
+			fix that.....
+		this portions are commented
+
+	change the name of childClass window class
 */
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
@@ -22,6 +28,7 @@ HWND CheckBox_V_scatter;
 HWND VisualSettingWindow, B_VS_Save;
 HWND COMBO_VS_Colour, COMBO_VS_Speed;
 HWND ShowMatrixWindow, SM_textbox, B_SM_Close;
+HWND ShortestPathWindow, SP_textBoxSource, SP_textBoxDest, B_SP_Apply;
 
 //graph settings window handlers
 HWND SettingWindow;	//child window
@@ -39,6 +46,7 @@ bool ChildWindowOpen = false;
 bool editorWindowOpen = false;
 bool VsSettingsOpen = false;
 bool SmWindowOpen = false;
+bool SpWindowOpen = false;
 
 const TCHAR *colors[] = { TEXT("Red"), TEXT("Dark Gold"), TEXT("Green"), TEXT("Teal"), TEXT("Purple"), TEXT("Lemon Chiffon"),
 TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black") };
@@ -75,7 +83,7 @@ int selectSpeed(int index);
 void getTextHeight(HWND handle);
 
 //thread handlers and functions
-HANDLE ThreadBfs, ThreadDfs;
+HANDLE ThreadBfs, ThreadDfs, ThreadBfsSP;
 DWORD WINAPI BFS(LPVOID param) {
 	VisualM.onProgress = true;
 	while (VisualM.getQueueSize() != 0) {
@@ -102,6 +110,23 @@ DWORD WINAPI DFS(LPVOID param) {
 	return 0;
 }
 
+/*
+DWORD WINAPI bfsShortestPath(LPVOID param) {
+	//VisualM.onProgress = true;
+	while (VisualM.getQueueSize() != 0) {
+		VisualM.bfsPathFind(FIO.adj_matrix, V, E, FIO.matrixBaseIndex);
+		sf::sleep(sf::milliseconds(VisualM.sleepTime - 500));
+	}
+	VisualM.getPath(VisualM.pred, V);
+	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
+	VisualM.showingTraverse = false;
+	VisualM.reset(V);
+	return 0;
+}
+*/
+
+
+
 void addMenu(HWND hwnd) {
 	HMENU FileSubMenu = CreateMenu();
 	HMENU ToolsSubMenu = CreateMenu();
@@ -121,6 +146,7 @@ void addMenu(HWND hwnd) {
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALIZEBFS, "Visualize BFS");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALIZEDFS, "Visualize DFS");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_SHOWMATRIX, "View Adjcent Matrix");
+	AppendMenu(VisualizationMenu, MF_STRING, ID_SHORTESTPATH, "Find Shortest Path");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALSETTINGS, "Settings");
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)VisualizationMenu, "Visualization");
 
@@ -182,7 +208,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			V.reset();
 			break;
 
-			//////////////////
+		////File io control menu
 		case ID_EXPORT:
 			id = MessageBox(handle, TEXT("Do you wish to save the current graph ?"), TEXT("Warning"), MB_YESNO);
 			if (id == 7)
@@ -201,7 +227,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			FIO.constructGraph(V, E);
 			break;
 
-			//visualization tools and menu handles
+		//visualization tools and menu handles
 		case ID_VISUALIZEBFS:
 			FIO.create_adj_matrix(V, E);
 			ThreadBfs = CreateThread(0, 0, BFS, NULL, 0, NULL);
@@ -210,14 +236,13 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			FIO.create_adj_matrix(V, E);
 			ThreadDfs = CreateThread(0, 0, DFS, NULL, 0, NULL);
 			break;
+
 		case ID_SHOWMATRIX:
 			FIO.reset();
 			FIO.create_adj_matrix(V, E);
 			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero, V.usingAlpha);
 			SetWindowText(SM_textbox, adjString.c_str());
-			//resize that window and controls according to the text string 
-			getTextHeight(SM_textbox);
-
+			getTextHeight(SM_textbox);	//resize that window and controls according to the text string 
 			if (!SmWindowOpen) {
 				ShowWindow(ShowMatrixWindow, SW_SHOWNORMAL);
 				SmWindowOpen = true;
@@ -227,6 +252,18 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 				SmWindowOpen = false;
 			}
 			break;
+
+		case ID_SHORTESTPATH:
+			if (!SpWindowOpen) {
+				ShowWindow(ShortestPathWindow, SW_SHOWNORMAL);
+				SpWindowOpen = true;
+			}
+			else {
+				ShowWindow(ShortestPathWindow, SW_HIDE);
+				SpWindowOpen = false;
+			}
+			break;
+
 		case ID_VISUALSETTINGS:
 			if (!editorWindowOpen) {
 				ShowWindow(VisualSettingWindow, SW_SHOWNORMAL);
@@ -237,6 +274,8 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 				VsSettingsOpen = false;
 			}
 			break;
+
+		//Editor control menu
 		case ID_EDITOROPTIONS:
 			if (!editorWindowOpen) {
 				ShowWindow(EditorWindow, SW_SHOWNORMAL);
@@ -431,6 +470,28 @@ LRESULT CALLBACK ShowMatProcessedMessage(HWND handle, UINT message, WPARAM wpara
 	return DefWindowProc(handle, message, wparam, lparam);	
 }
 
+LRESULT CALLBACK ShortestPathParamMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
+	switch (message)
+	{
+	case WM_COMMAND:
+		char src[3], dest[3];
+		if (wparam == ID_SP_APPLY) {
+			GetWindowText(SP_textBoxSource, src, 3);
+			GetWindowText(SP_textBoxDest, dest, 3);
+			//VisualM.getInputSP(src, dest, V.usingAlpha);
+			SetWindowText(SP_textBoxSource, "");
+			SetWindowText(SP_textBoxDest, "");
+			
+			ShowWindow(ShortestPathWindow, SW_HIDE);
+			SpWindowOpen = false;
+			//ThreadBfsSP = CreateThread(NULL, 0, bfsShortestPath, NULL, 0, NULL);
+		}
+	default:
+		break;
+	}
+	return DefWindowProc(handle, message, wparam, lparam);
+}
+
 void getTextHeight(HWND handle) {
 
 	HDC hdc;
@@ -469,6 +530,7 @@ void setWindowClassParam(WNDCLASS &wndClass, HINSTANCE currInstance) {
 
 int main()
 {
+	srand(time(NULL));
 	HINSTANCE instance = GetModuleHandle(NULL);
 
 	WNDCLASS windowClass;
@@ -514,16 +576,16 @@ int main()
 	HWND edgeMessage = CreateWindow(TEXT("STATIC"), TEXT("add_edge_between"), WS_VISIBLE | WS_CHILD, win32WindowSize.x - 188, 175,
 		164, 40, window, NULL, instance, NULL);
 	Add_E_textBox1 = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 185, 200,
-		50, 25, window, NULL, NULL, NULL);
+		50, 25, window, NULL, instance, NULL);
 	HWND gap1 = CreateWindow(TEXT("STATIC"), TEXT("and"), WS_VISIBLE | WS_CHILD, win32WindowSize.x - 125, 202, 40, 20,
 		window, NULL, instance, NULL);
 	Add_E_textBox2 = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 80, 200,
-		50, 25, window, NULL, NULL, NULL);
+		50, 25, window, NULL, instance, NULL);
 	//weigth
 	HWND gap2 = CreateWindow(TEXT("STATIC"), TEXT("Weight"), WS_VISIBLE | WS_CHILD, win32WindowSize.x - 185, 236, 80, 20,
 		window, NULL, instance, NULL);
 	Add_EW_textBox1 = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 80, 235,
-		50, 25, window, NULL, NULL, NULL);
+		50, 25, window, NULL, instance, NULL);
 	B_AddEdge = CreateWindow(TEXT("BUTTON"), TEXT("ADD"), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 143, 266,
 		70, 30, window, (HMENU)ID_ADDEDGE, instance, NULL);
 
@@ -531,11 +593,11 @@ int main()
 	HWND edgeMessage2 = CreateWindow(TEXT("STATIC"), TEXT("Delete_edge_between"), WS_VISIBLE | WS_CHILD, win32WindowSize.x - 200, 310,
 		180, 40, window, NULL, instance, NULL);
 	Del_E_textBox1 = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 185, 335,
-		50, 25, window, NULL, NULL, NULL);
+		50, 25, window, NULL, instance, NULL);
 	HWND gap3 = CreateWindow(TEXT("STATIC"), TEXT("and"), WS_VISIBLE | WS_CHILD, win32WindowSize.x - 125, 338, 40, 20,
 		window, NULL, instance, NULL);
 	Del_E_textBox2 = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 80, 335,
-		50, 25, window, NULL, NULL, NULL);
+		50, 25, window, NULL, instance, NULL);
 	B_DelEdge = CreateWindow(TEXT("BUTTON"), TEXT("DELETE"), WS_VISIBLE | WS_CHILD | WS_BORDER, win32WindowSize.x - 153, 368,
 		90, 30, window, (HMENU)ID_DELEDGE, instance, NULL);
 	HWND line4 = CreateWindow(TEXT("STATIC"), TEXT(""), WS_VISIBLE | WS_CHILD | SS_GRAYRECT | WS_BORDER, win32WindowSize.x - 194,
@@ -651,6 +713,7 @@ int main()
 
 
 	//////////////////////////////////////////////////////////////////////
+	//////graph setting window class
 	WNDCLASS ChildClass;
 	setWindowClassParam(ChildClass, instance);
 	ChildClass.lpfnWndProc = &SettingsProcessMessage;
@@ -721,6 +784,32 @@ int main()
 
 	B_SM_Close = CreateWindow(TEXT("BUTTON"), TEXT("Close"), WS_VISIBLE | WS_CHILD | WS_BORDER, 10, 315,
 		363, 30, ShowMatrixWindow, (HMENU)ID_SM_CLOSE, instance, NULL);
+
+	////////////////////////////////////////////////
+	///////shortest path parameters collector window
+	WNDCLASS VS_ShortestPath;
+	setWindowClassParam(VS_ShortestPath, instance);
+	VS_ShortestPath.lpfnWndProc = &ShortestPathParamMessage;
+	VS_ShortestPath.lpszClassName = TEXT("VS_ShortestPath");
+	RegisterClass(&VS_ShortestPath);
+
+	ShortestPathWindow = CreateWindow(TEXT("VS_ShortestPath"), TEXT("Shortest path details"), WS_VISIBLE, 500, 200,
+		300, 200, NULL, NULL, instance, NULL);
+	ShowWindow(ShortestPathWindow, SW_HIDE);
+
+	HWND SP_LableSource = CreateWindow(TEXT("STATIC"), TEXT("Source:"), WS_VISIBLE | WS_CHILD, 8, 20, 100, 20,
+		ShortestPathWindow, NULL, instance, NULL);
+	HWND SP_LableDest = CreateWindow(TEXT("STATIC"), TEXT("Destination:"), WS_VISIBLE | WS_CHILD, 8, 60, 100, 20,
+		ShortestPathWindow, NULL, instance, NULL);
+
+	SP_textBoxSource = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 120, 18,
+		100, 25, ShortestPathWindow, (HMENU)ID_SP_SOURCE, instance, NULL);
+	SP_textBoxDest = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 120, 58,
+		100, 25, ShortestPathWindow, (HMENU)ID_SP_DEST, instance, NULL);
+
+	B_SP_Apply = CreateWindow(TEXT("BUTTON"), TEXT("Apply"), WS_VISIBLE | WS_CHILD | WS_BORDER, 202, 110,
+		70, 35, ShortestPathWindow, (HMENU)ID_SP_APPLY, instance, NULL);
+
 
 	/////////////////////////////////////////////////
 	//////////////////event loop/////////////////////
