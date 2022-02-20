@@ -141,7 +141,7 @@
     <ClInclude Include="Edge.hpp" />
     <ClInclude Include="EdgeManager.hpp" />
     <ClInclude Include="File_IO.hpp" />
-    <ClInclude Include="Utils.hpp" />
+    <ClInclude Include="ControlIDs.hpp" />
     <ClInclude Include="Vertex.hpp" />
     <ClInclude Include="VertexManager.hpp" />
     <ClInclude Include="VisualizationManager.hpp" />

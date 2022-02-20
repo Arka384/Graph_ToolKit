@@ -1,5 +1,7 @@
-
-#include "Utils.hpp"
+#include "VisualizationManager.hpp"
+#include "ControlIDs.hpp"
+#include <Windows.h>
+#include <WinUser.h>
 
 /*
 	adding shortest path finding option
@@ -13,6 +15,7 @@
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
 sf::Vector2i sfmlWindowSize = sf::Vector2i(1080, 640);
+
 //win32 buttons and window handlers
 HWND B_AddVertex, B_DeleteVertex;	//vertex buttons
 HWND B_AddEdge, B_DelEdge;	//edge buttons
@@ -39,6 +42,7 @@ HMENU hMenu;
 //handlers for text boxes
 HWND Add_E_textBox1, Add_E_textBox2, Add_EW_textBox1;
 HWND Del_E_textBox1, Del_E_textBox2;
+
 //window closed flags
 bool ParentClosed = false;
 bool ChildClosed = false;
@@ -63,16 +67,16 @@ VertexManager V;
 EdgeManager E;
 File_IO FIO;
 VisualizationManager VisualM;
+
 void restoreProfile(void);
 
 bool EdgeSynch = false;
 int deletedVertex = 0;
 float dt = 0;
 float timer = 0;
-///////
 std::string adjString;
-///////
-//window class creating function
+
+////window class creating function
 void setWindowClassParam(WNDCLASS &wndClass, HINSTANCE currInstance);
 ///////////
 sf::Color selectColour(int index);
