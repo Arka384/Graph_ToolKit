@@ -114,7 +114,6 @@ DWORD WINAPI DFS(LPVOID param) {
 	return 0;
 }
 
-/*
 DWORD WINAPI bfsShortestPath(LPVOID param) {
 	//VisualM.onProgress = true;
 	while (VisualM.getQueueSize() != 0) {
@@ -127,7 +126,6 @@ DWORD WINAPI bfsShortestPath(LPVOID param) {
 	VisualM.reset(V);
 	return 0;
 }
-*/
 
 
 
@@ -482,13 +480,14 @@ LRESULT CALLBACK ShortestPathParamMessage(HWND handle, UINT message, WPARAM wpar
 		if (wparam == ID_SP_APPLY) {
 			GetWindowText(SP_textBoxSource, src, 3);
 			GetWindowText(SP_textBoxDest, dest, 3);
-			//VisualM.getInputSP(src, dest, V.usingAlpha);
+			VisualM.getInputSP(src, dest, V.usingAlpha, V.startFromZero);
 			SetWindowText(SP_textBoxSource, "");
 			SetWindowText(SP_textBoxDest, "");
 			
 			ShowWindow(ShortestPathWindow, SW_HIDE);
 			SpWindowOpen = false;
-			//ThreadBfsSP = CreateThread(NULL, 0, bfsShortestPath, NULL, 0, NULL);
+			FIO.create_adj_matrix(V, E);
+			ThreadBfsSP = CreateThread(NULL, 0, bfsShortestPath, NULL, 0, NULL);
 		}
 	default:
 		break;

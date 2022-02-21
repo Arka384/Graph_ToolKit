@@ -121,12 +121,11 @@ void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 
 }
 
-/*
 
 //this function gets the input for finding shortest paths
 /////modification needed
 	//only working for normal numbering and not with usingAlpha and StartFromZero
-void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha)
+void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha, bool startFromZero)
 {
 	src = dest = 0;
 	try {
@@ -135,8 +134,8 @@ void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha)
 				*a = toupper(*a);
 			if (islower(*b) != 0)
 				*b = toupper(*b);
-			src = static_cast<int>(*a) - 64;
-			dest = static_cast<int>(*b) - 64;
+			src = static_cast<int>(*a) - 65;
+			dest = static_cast<int>(*b) - 65;
 		}
 		else {
 			src = std::atoi(a);
@@ -147,7 +146,7 @@ void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha)
 		std::cout << ex.what();
 	}
 
-	std::cout << src << " " << dest << "\n";
+	//std::cout << src << " " << dest << "\n";
 
 }
 
@@ -199,7 +198,12 @@ void VisualizationManager::getPath(int * pred, VertexManager &v)
 			if (k->numbering == path[i]) {
 				k->shape.setFillColor(highlightColour);
 				std::stringstream sstream;
-				sstream << k->numbering;
+				if (v.usingAlpha) {
+					std::string name = k->name.getString();
+					sstream << name.c_str();
+				}
+				else
+					sstream << k->numbering;
 				pathString.append(sstream.str());
 				break;
 			}
@@ -211,8 +215,7 @@ void VisualizationManager::getPath(int * pred, VertexManager &v)
 	traverseText.setString(pathString);
 }
 
-*/
-
+//this is for getting the traverse string after BFS or DFS
 void VisualizationManager::getTraversed(void)
 {
 	onProgress = false;

@@ -34,9 +34,9 @@ public:
 	void reset(VertexManager &v);
 	void bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
 	void dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
-	//void getInputSP(char *a, char *b, bool usingAlpha);
-	//void bfsPathFind(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex);
-	//void getPath(int *pred, VertexManager &v);
+	void getInputSP(char *a, char *b, bool usingAlpha, bool startFromZero);
+	void bfsPathFind(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex);
+	void getPath(int *pred, VertexManager &v);
 	void getTraversed(void);
 	void changeHighlightColour(sf::Color colour);
 	void changeSpeed(int speed);
