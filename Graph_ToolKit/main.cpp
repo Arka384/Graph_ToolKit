@@ -53,13 +53,15 @@ bool SmWindowOpen = false;
 bool SpWindowOpen = false;
 
 const TCHAR *colors[] = { TEXT("Red"), TEXT("Dark Gold"), TEXT("Green"), TEXT("Teal"), TEXT("Purple"), TEXT("Lemon Chiffon"),
-TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black") };
+TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black"), TEXT("Orange Red"), TEXT("Olive"), TEXT("Colcolate"), TEXT("Rosy Brown"),
+ TEXT("Light Pink"), TEXT("Slate Gray")	};
 const TCHAR *fontSizes[] = { TEXT("20"), TEXT("25"), TEXT("30"), TEXT("35"), TEXT("40") };
 const TCHAR *vertexSizes[] = { TEXT("25"), TEXT("30"), TEXT("35"), TEXT("40"), TEXT("45"), TEXT("50") };
 const TCHAR *edgeSizes[] = { TEXT("5"), TEXT("10"), TEXT("15") };
 const TCHAR *speed[] = { TEXT("Fast"), TEXT("Medium"), TEXT("Slow") };
 TCHAR tempText[256];
 int selected = 0;
+const int nColors = 16;
 const int profileSize = 11;
 int currentProfile[profileSize] = { 0 };
 
@@ -644,7 +646,7 @@ int main()
 		EditorWindow, NULL, instance, NULL);
 	COMBO_V_Color = CreateWindow(TEXT("COMBOBOX"), NULL, WS_VSCROLL | WS_VISIBLE | WS_CHILD | CBS_DROPDOWN, 8, COMBO_Ypos, 140,
 		COMBO_Height, EditorWindow, (HMENU)ID_VERTEXCOLORCHANGE, instance, NULL);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < nColors; i++)
 		SendMessage(COMBO_V_Color, CB_ADDSTRING, 0, (LPARAM)colors[i]);
 	SendMessage(COMBO_V_Color, CB_SETCURSEL, (WPARAM)currentProfile[0], (LPARAM)(TCHAR)colors[currentProfile[0]]);
 
@@ -652,7 +654,7 @@ int main()
 		EditorWindow, NULL, instance, NULL);
 	COMBO_V_nameColor = CreateWindow(TEXT("COMBOBOX"), NULL, WS_VSCROLL | WS_VISIBLE | WS_CHILD | CBS_DROPDOWN, 590, COMBO_Ypos, 180,
 		COMBO_Height, EditorWindow, (HMENU)ID_VERTEXNUMCOLORCHANGE, instance, NULL);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < nColors; i++)
 		SendMessage(COMBO_V_nameColor, CB_ADDSTRING, 0, (LPARAM)colors[i]);
 	SendMessage(COMBO_V_nameColor, CB_SETCURSEL, (WPARAM)currentProfile[1], (LPARAM)(TCHAR)colors[currentProfile[1]]);
 
@@ -685,7 +687,7 @@ int main()
 		NULL, instance, NULL);
 	COMBO_E_Color = CreateWindow(TEXT("COMBOBOX"), NULL, WS_VSCROLL | WS_VISIBLE | WS_CHILD | CBS_DROPDOWN, 8, COMBO_Ypos, 140,
 		COMBO_Height, EditorWindow, (HMENU)ID_EDGECOLORCHANGE, instance, NULL);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < nColors; i++)
 		SendMessage(COMBO_E_Color, CB_ADDSTRING, 0, (LPARAM)colors[i]);
 	SendMessage(COMBO_E_Color, CB_SETCURSEL, (WPARAM)currentProfile[4], (LPARAM)(TCHAR)colors[currentProfile[4]]);
 
@@ -693,7 +695,7 @@ int main()
 		EditorWindow, NULL, instance, NULL);
 	COMBO_E_weightColor = CreateWindow(TEXT("COMBOBOX"), NULL, WS_VSCROLL | WS_VISIBLE | WS_CHILD | CBS_DROPDOWN, 590, COMBO_Ypos, 180,
 		COMBO_Height, EditorWindow, (HMENU)ID_EDGEWEIGHTCOLORCHANGE, instance, NULL);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < nColors; i++)
 		SendMessage(COMBO_E_weightColor, CB_ADDSTRING, 0, (LPARAM)colors[i]);
 	SendMessage(COMBO_E_weightColor, CB_SETCURSEL, (WPARAM)currentProfile[5], (LPARAM)(TCHAR)colors[currentProfile[5]]);
 
@@ -893,6 +895,24 @@ sf::Color selectColour(int index)
 		break;
 	case 9:
 		c = sf::Color::Black;
+		break;
+	case 10:
+		c = sf::Color(255, 69, 0, 255);
+		break;
+	case 11:
+		c = sf::Color(128, 128, 0, 255);
+		break;
+	case 12:
+		c = sf::Color(210, 105, 30, 255);
+		break;
+	case 13:
+		c = sf::Color(188, 143, 143, 255);
+		break;
+	case 14:
+		c = sf::Color(255, 182, 193, 255);
+		break;
+	case 15:
+		c = sf::Color(176, 196, 222, 255);
 		break;
 	default:
 		break;
