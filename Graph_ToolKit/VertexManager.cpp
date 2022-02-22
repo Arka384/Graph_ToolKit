@@ -96,7 +96,9 @@ void VertexManager::updateVertices(sf::RenderWindow &window)
 
 		for (auto i = vertices.begin(); i != vertices.end(); i++) {
 			if (i->numbering == x)
-				i->shape.setPosition(mousePos.x, mousePos.y);
+				if(mousePos.x - vertex_size / 2 > 0 && mousePos.x + vertex_size / 2 < 1080 &&
+					mousePos.y - vertex_size / 2 > 0 && mousePos.y + vertex_size / 2 < 640)
+						i->shape.setPosition(mousePos.x, mousePos.y);
 		}
 	}
 }
