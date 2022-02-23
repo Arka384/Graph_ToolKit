@@ -302,8 +302,8 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 		case ID_HOWTOUSE:
 			//create this window on demand unlike the others
 			HelpWindow = CreateWindow(TEXT("Help"), TEXT("How-To"), WS_VISIBLE | WS_SYSMENU, 500, 200,
-				640, 480, NULL, NULL, NULL, NULL);
-			HelpTextWindow = CreateWindow(TEXT("STATIC"), temp, WS_VISIBLE | WS_CHILD, 0, 0, 800, 800,
+				1000, 600, NULL, NULL, NULL, NULL);
+			HelpTextWindow = CreateWindow(TEXT("STATIC"), temp, WS_VISIBLE | WS_CHILD, 0, 0, 1800, 1800,
 				HelpWindow, NULL, NULL, NULL);
 
 			//load info from file

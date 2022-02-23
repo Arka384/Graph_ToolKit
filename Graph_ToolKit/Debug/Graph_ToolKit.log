@@ -1,4 +1,5 @@
-﻿  main.cpp
+﻿  File_IO.cpp
+  main.cpp
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(587): warning C4101: 'sInfo': unreferenced local variable
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(621): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
@@ -12,4 +13,5 @@ c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(799): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(845): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(853): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+  Generating Code...
   Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Debug\Graph_ToolKit.exe

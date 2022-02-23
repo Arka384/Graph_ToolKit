@@ -1,3 +1,28 @@
-Currently....
-Have nothing in here.......
-	:-D
+How to use :
+==============================================>
+
+A. Vertex Controls:
+=====================>
+	1. Adding a vertex: 
+		Use "Add a Vertex" button of the side control panel to create a vertex 
+	   	with appropriate numbering.
+	2. Delete a vertex: 
+		Use "Delete a Vertex" button of the side control panel to delete the 
+	   	last added vertex.
+
+B. Edge Controls:
+=====================>
+	1. Adding an edge: 
+		Locate Edge_Controls in the side control panel. Enter the name of two vertices properly
+	   	between which the edge is to be added. Then press Add.
+	   	To create weighted edges enter corresponding weight in the textbox weight, before pressing Add.
+	2. Deleting and edge: 
+		In the Edge_Controls section find "Delete_edge_between" and insert the name of the
+	   	vertices where the edge is to be deleted.
+
+	   N.B:	If you do not mention any weight while adding an edge, the default weight will be 1.
+		Name of the vertices should be entered properly. If you are using numbers then enter numbers or if
+		you are using alphabets then insert corresponding alphabets in eighter upper or lower case.
+		Otherwise the edge will not be added. The same goes for deleting an edge.
+		The order of names is important while working with directed graphs. In that case edges will be 
+		added in the order you enter vertices names.

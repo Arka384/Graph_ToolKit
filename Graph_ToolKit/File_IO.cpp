@@ -146,6 +146,7 @@ void File_IO::loadLastProfile(int * currentProfile, int size)
 
 std::string File_IO::loadHowToInfo(void)
 {
+	howToInfo.clear();
 	std::ifstream input("res/howTo.txt");
 	std::string line;
 	if (input.is_open()) {
