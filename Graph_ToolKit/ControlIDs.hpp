@@ -4,6 +4,8 @@ constexpr int ID_IMPORT = 1;
 constexpr int ID_EXPORT = 2;
 constexpr int ID_EDITOROPTIONS = 3;
 
+constexpr int ID_HOWTOUSE = 5;
+
 constexpr int ID_ADDEDGE = 10;
 constexpr int ID_DELEDGE = 11;
 constexpr int ID_ADDVERTEX = 12;

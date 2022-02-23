@@ -4,12 +4,7 @@
 #include <WinUser.h>
 
 /*
-	adding shortest path finding option
-		bfs path finding is working only for normal numbering
-		not working with UsingAlpha and StartFromZero
-			fix that.....
-		this portions are commented
-
+	Add how to info properly.
 	change the name of childClass window class
 */
 
@@ -37,6 +32,12 @@ HWND ShortestPathWindow, SP_textBoxSource, SP_textBoxDest, B_SP_Apply;
 HWND SettingWindow;	//child window
 HWND childCheckbox1, childCheckbox2, childCheckbox3, childCheckbox4;
 HWND BC_Save;
+
+//help window handlers
+HWND HelpWindow, HelpTextWindow, B_HelpClose;
+LPCSTR temp;
+int textPosX = 0, textPosY = 0;
+
 //handlers for win32 menu
 HMENU hMenu;
 //handlers for text boxes
@@ -135,6 +136,7 @@ void addMenu(HWND hwnd) {
 	HMENU FileSubMenu = CreateMenu();
 	HMENU ToolsSubMenu = CreateMenu();
 	HMENU VisualizationMenu = CreateMenu();
+	HMENU HelpMenu = CreateMenu();
 	hMenu = CreateMenu();
 
 	//creating file menu and its submenus
@@ -154,11 +156,16 @@ void addMenu(HWND hwnd) {
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALSETTINGS, "Settings");
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)VisualizationMenu, "Visualization");
 
+	//help menu
+	AppendMenu(HelpMenu, MF_STRING, ID_HOWTOUSE, "How to use");
+	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)HelpMenu, "Help");
+
 	SetMenu(hwnd, hMenu);
 }
 
 LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
 	int id = 0;
+	std::string fileLine;
 	switch (message)
 	{
 	case WM_CLOSE:
@@ -290,6 +297,22 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 				editorWindowOpen = false;
 			}
 			break;
+		
+		//Help menu control
+		case ID_HOWTOUSE:
+			//create this window on demand unlike the others
+			HelpWindow = CreateWindow(TEXT("Help"), TEXT("How-To"), WS_VISIBLE | WS_SYSMENU, 500, 200,
+				640, 480, NULL, NULL, NULL, NULL);
+			HelpTextWindow = CreateWindow(TEXT("STATIC"), temp, WS_VISIBLE | WS_CHILD, 0, 0, 800, 800,
+				HelpWindow, NULL, NULL, NULL);
+
+			//load info from file
+			fileLine = FIO.loadHowToInfo();
+			temp = fileLine.c_str();
+			SetWindowText(HelpTextWindow, temp);
+			//std::cout << temp;
+			break;
+		
 		default:
 			break;
 		}
@@ -491,6 +514,66 @@ LRESULT CALLBACK ShortestPathParamMessage(HWND handle, UINT message, WPARAM wpar
 			FIO.create_adj_matrix(V, E);
 			ThreadBfsSP = CreateThread(NULL, 0, bfsShortestPath, NULL, 0, NULL);
 		}
+	default:
+		break;
+	}
+	return DefWindowProc(handle, message, wparam, lparam);
+}
+
+LRESULT CALLBACK helpProcessesMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
+
+	switch (message)
+	{
+	case WM_CREATE:
+		SCROLLINFO SbInfo;
+		SbInfo.cbSize = sizeof(SbInfo);
+		SbInfo.nPos = 0;
+		SbInfo.nMax = 2800;	//change this according to text size
+		SbInfo.nPage = 400;
+		SbInfo.fMask = SIF_ALL;
+		SbInfo.nMin = 0;
+		SetScrollInfo(handle, SB_HORZ, &SbInfo, TRUE);
+		SetScrollInfo(handle, SB_VERT, &SbInfo, TRUE);
+		break;
+
+	case WM_HSCROLL:
+		SbInfo.cbSize = sizeof(SbInfo);
+		GetScrollInfo(handle, SB_HORZ, &SbInfo);
+		switch (LOWORD(wparam)) {
+			case SB_LINELEFT:
+				SbInfo.nPos -= 5;
+				break;
+			case SB_LINERIGHT:
+				SbInfo.nPos += 5;
+				break;
+			case SB_THUMBTRACK:
+				SbInfo.nPos = HIWORD(wparam);
+				break;
+		}
+		SetScrollInfo(handle, SB_HORZ, &SbInfo, TRUE);
+		textPosX = -SbInfo.nPos;
+		MoveWindow(HelpTextWindow, textPosX, textPosY, 1800, 1800, TRUE);
+		break;
+
+	case WM_VSCROLL:
+		SbInfo.cbSize = sizeof(SbInfo);
+		GetScrollInfo(handle, SB_VERT, &SbInfo);
+		switch (LOWORD(wparam)) {
+		case SB_LINEUP:
+			SbInfo.nPos -= 5;
+			break;
+		case SB_LINEDOWN:
+			SbInfo.nPos += 5;
+			break;
+		case SB_THUMBTRACK:
+			SbInfo.nPos = HIWORD(wparam);
+			break;
+		}
+		SetScrollInfo(handle, SB_VERT, &SbInfo, TRUE);
+		textPosY = -SbInfo.nPos;
+		MoveWindow(HelpTextWindow, textPosX, textPosY, 1800, 1800, TRUE);
+		break;
+		
 	default:
 		break;
 	}
@@ -814,6 +897,15 @@ int main()
 
 	B_SP_Apply = CreateWindow(TEXT("BUTTON"), TEXT("Apply"), WS_VISIBLE | WS_CHILD | WS_BORDER, 202, 110,
 		70, 35, ShortestPathWindow, (HMENU)ID_SP_APPLY, instance, NULL);
+
+	//////////////////////////////////////////////////
+	///////Help window
+	WNDCLASS helpWindowClass;
+	setWindowClassParam(helpWindowClass, instance);
+	helpWindowClass.lpfnWndProc = &helpProcessesMessage;
+	helpWindowClass.lpszClassName = TEXT("Help");
+	RegisterClass(&helpWindowClass);
+	//creating the window is handled in callback of main parent window
 
 
 	/////////////////////////////////////////////////

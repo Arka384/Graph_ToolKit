@@ -13,6 +13,7 @@ private:
 public:
 	int adj_matrix[max][max] = { 0 };
 	int matrixBaseIndex = 0;
+	std::string howToInfo = "";
 
 	void create_adj_matrix(VertexManager &V, EdgeManager &E);
 	std::string matrixToString(int current_vertices, bool startFromZero, bool usingAlpha);
@@ -22,5 +23,6 @@ public:
 	void constructGraph(VertexManager &V, EdgeManager &E);
 	void saveCurrentProfile(int *currentProfile, int size);
 	void loadLastProfile(int *currentProfile, int size);
+	std::string loadHowToInfo(void);
 };
 
