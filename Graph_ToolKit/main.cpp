@@ -10,6 +10,7 @@
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
 sf::Vector2i sfmlWindowSize = sf::Vector2i(1080, 640);
+HINSTANCE instance = NULL;
 
 //win32 buttons and window handlers
 HWND B_AddVertex, B_DeleteVertex;	//vertex buttons
@@ -25,7 +26,7 @@ HWND CheckBox_V_scatter;
 //visualisation settings window handlers
 HWND VisualSettingWindow, B_VS_Save;
 HWND COMBO_VS_Colour, COMBO_VS_Speed;
-HWND ShowMatrixWindow, SM_textbox, B_SM_Close;
+HWND ShowMatrixWindow, SM_textbox;
 HWND ShortestPathWindow, SP_textBoxSource, SP_textBoxDest, B_SP_Apply;
 
 //graph settings window handlers
@@ -50,12 +51,12 @@ bool ChildClosed = false;
 bool ChildWindowOpen = false;
 bool editorWindowOpen = false;
 bool VsSettingsOpen = false;
-bool SmWindowOpen = false;
+//bool SmWindowOpen = false;
 bool SpWindowOpen = false;
 
 const TCHAR *colors[] = { TEXT("Red"), TEXT("Dark Gold"), TEXT("Green"), TEXT("Teal"), TEXT("Purple"), TEXT("Lemon Chiffon"),
-TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black"), TEXT("Orange Red"), TEXT("Olive"), TEXT("Colcolate"), TEXT("Rosy Brown"),
- TEXT("Light Pink"), TEXT("Slate Gray")	};
+	TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black"), TEXT("Orange Red"), TEXT("Olive"), TEXT("Colcolate"), TEXT("Rosy Brown"),
+	TEXT("Light Pink"), TEXT("Slate Gray") };
 const TCHAR *fontSizes[] = { TEXT("20"), TEXT("25"), TEXT("30"), TEXT("35"), TEXT("40") };
 const TCHAR *vertexSizes[] = { TEXT("25"), TEXT("30"), TEXT("35"), TEXT("40"), TEXT("45"), TEXT("50") };
 const TCHAR *edgeSizes[] = { TEXT("5"), TEXT("10"), TEXT("15") };
@@ -252,16 +253,14 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			FIO.reset();
 			FIO.create_adj_matrix(V, E);
 			adjString = FIO.matrixToString(V.current_vertices, V.startFromZero, V.usingAlpha);
+			//create the SM_window
+			ShowMatrixWindow = CreateWindow(TEXT("VS_Show_Matrix"), TEXT("Adjacent Matrix"), WS_VISIBLE | WS_SYSMENU, 500, 200,
+				400, 400, NULL, NULL, instance, NULL);
+			SM_textbox = CreateWindow(TEXT("STATIC"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER,
+				10, 10, 360, 360, ShowMatrixWindow, NULL, instance, NULL);
+			//update the text
 			SetWindowText(SM_textbox, adjString.c_str());
 			getTextHeight(SM_textbox);	//resize that window and controls according to the text string 
-			if (!SmWindowOpen) {
-				ShowWindow(ShowMatrixWindow, SW_SHOWNORMAL);
-				SmWindowOpen = true;
-			}
-			else {
-				ShowWindow(ShowMatrixWindow, SW_HIDE);
-				SmWindowOpen = false;
-			}
 			break;
 
 		case ID_SHORTESTPATH:
@@ -484,11 +483,7 @@ LRESULT CALLBACK ShowMatProcessedMessage(HWND handle, UINT message, WPARAM wpara
 	
 	switch (message)
 	{
-	case WM_COMMAND:
-		if (wparam == ID_SM_CLOSE) {
-			SmWindowOpen = false;
-			ShowWindow(ShowMatrixWindow, SW_HIDE);
-		}
+	case WM_CREATE:
 		break;
 	default:
 		break;
@@ -598,10 +593,8 @@ void getTextHeight(HWND handle) {
 	if (TextWidth > ParentWidth)
 		ParentWidth = TextWidth;
 
-	SetWindowPos(ShowMatrixWindow, NULL, 500, 200, ParentWidth, TextHeight + 100, NULL);
-	SetWindowPos(SM_textbox, NULL, 10, 10, ParentWidth - 40, TextHeight +2, NULL);
-	SetWindowPos(B_SM_Close, NULL, 10, TextHeight + 17, ParentWidth - 40, 30, NULL);
-
+	SetWindowPos(ShowMatrixWindow, NULL, 500, 200, ParentWidth, TextHeight + 130, NULL);
+	SetWindowPos(SM_textbox, NULL, 10, 10, ParentWidth - 40, TextHeight + 60, NULL);
 }
 
 //window class creating function
@@ -619,7 +612,7 @@ void setWindowClassParam(WNDCLASS &wndClass, HINSTANCE currInstance) {
 int main()
 {
 	srand(time(NULL));
-	HINSTANCE instance = GetModuleHandle(NULL);
+	instance = GetModuleHandle(NULL);
 
 	WNDCLASS windowClass;
 	setWindowClassParam(windowClass, instance);
@@ -862,16 +855,8 @@ int main()
 	VS_ShowMatrix.lpfnWndProc = &ShowMatProcessedMessage;
 	VS_ShowMatrix.lpszClassName = TEXT("VS_Show_Matrix");
 	RegisterClass(&VS_ShowMatrix);
+	//creating the window is handled in callback of main parent window
 
-	ShowMatrixWindow = CreateWindow(TEXT("VS_Show_Matrix"), TEXT("Adjacent Matrix"), WS_VISIBLE, 500, 200,
-		400, 400, NULL, NULL, instance, NULL);
-	ShowWindow(ShowMatrixWindow, SW_HIDE);
-
-	SM_textbox = CreateWindow(TEXT("STATIC"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 
-		10, 10, 360, 290, ShowMatrixWindow, NULL, instance, NULL);
-
-	B_SM_Close = CreateWindow(TEXT("BUTTON"), TEXT("Close"), WS_VISIBLE | WS_CHILD | WS_BORDER, 10, 315,
-		363, 30, ShowMatrixWindow, (HMENU)ID_SM_CLOSE, instance, NULL);
 
 	////////////////////////////////////////////////
 	///////shortest path parameters collector window
