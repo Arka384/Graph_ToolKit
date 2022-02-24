@@ -51,7 +51,6 @@ bool ChildClosed = false;
 bool ChildWindowOpen = false;
 bool editorWindowOpen = false;
 bool VsSettingsOpen = false;
-//bool SmWindowOpen = false;
 bool SpWindowOpen = false;
 
 const TCHAR *colors[] = { TEXT("Red"), TEXT("Dark Gold"), TEXT("Green"), TEXT("Teal"), TEXT("Purple"), TEXT("Lemon Chiffon"),
@@ -141,8 +140,8 @@ void addMenu(HWND hwnd) {
 	hMenu = CreateMenu();
 
 	//creating file menu and its submenus
-	AppendMenu(FileSubMenu, MF_STRING, ID_IMPORT, "Import");
-	AppendMenu(FileSubMenu, MF_STRING, ID_EXPORT, "Export");
+	AppendMenu(FileSubMenu, MF_STRING, ID_IMPORT, "Load");
+	AppendMenu(FileSubMenu, MF_STRING, ID_EXPORT, "Save");
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)FileSubMenu, " File ");
 
 	//creating tools menu and its submeus
@@ -150,9 +149,9 @@ void addMenu(HWND hwnd) {
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)ToolsSubMenu, "Tools");
 
 	//creating visualization menu
+	AppendMenu(VisualizationMenu, MF_STRING, ID_SHOWMATRIX, "View Adjcent Matrix");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALIZEBFS, "Visualize BFS");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALIZEDFS, "Visualize DFS");
-	AppendMenu(VisualizationMenu, MF_STRING, ID_SHOWMATRIX, "View Adjcent Matrix");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_SHORTESTPATH, "Find Shortest Path");
 	AppendMenu(VisualizationMenu, MF_STRING, ID_VISUALSETTINGS, "Settings");
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)VisualizationMenu, "Visualization");
@@ -302,7 +301,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			//create this window on demand unlike the others
 			HelpWindow = CreateWindow(TEXT("Help"), TEXT("How-To"), WS_VISIBLE | WS_SYSMENU, 500, 200,
 				1000, 600, NULL, NULL, NULL, NULL);
-			HelpTextWindow = CreateWindow(TEXT("STATIC"), temp, WS_VISIBLE | WS_CHILD, 0, 0, 1800, 1800,
+			HelpTextWindow = CreateWindow(TEXT("STATIC"), temp, WS_VISIBLE | WS_CHILD, 0, 0, 1000, 1800,
 				HelpWindow, NULL, NULL, NULL);
 
 			//load info from file
@@ -523,31 +522,11 @@ LRESULT CALLBACK helpProcessesMessage(HWND handle, UINT message, WPARAM wparam, 
 		SCROLLINFO SbInfo;
 		SbInfo.cbSize = sizeof(SbInfo);
 		SbInfo.nPos = 0;
-		SbInfo.nMax = 2800;	//change this according to text size
+		SbInfo.nMax = 2000;	//change this according to text size
 		SbInfo.nPage = 400;
 		SbInfo.fMask = SIF_ALL;
 		SbInfo.nMin = 0;
-		SetScrollInfo(handle, SB_HORZ, &SbInfo, TRUE);
 		SetScrollInfo(handle, SB_VERT, &SbInfo, TRUE);
-		break;
-
-	case WM_HSCROLL:
-		SbInfo.cbSize = sizeof(SbInfo);
-		GetScrollInfo(handle, SB_HORZ, &SbInfo);
-		switch (LOWORD(wparam)) {
-			case SB_LINELEFT:
-				SbInfo.nPos -= 5;
-				break;
-			case SB_LINERIGHT:
-				SbInfo.nPos += 5;
-				break;
-			case SB_THUMBTRACK:
-				SbInfo.nPos = HIWORD(wparam);
-				break;
-		}
-		SetScrollInfo(handle, SB_HORZ, &SbInfo, TRUE);
-		textPosX = -SbInfo.nPos;
-		MoveWindow(HelpTextWindow, textPosX, textPosY, 1800, 1800, TRUE);
 		break;
 
 	case WM_VSCROLL:
@@ -566,7 +545,7 @@ LRESULT CALLBACK helpProcessesMessage(HWND handle, UINT message, WPARAM wparam, 
 		}
 		SetScrollInfo(handle, SB_VERT, &SbInfo, TRUE);
 		textPosY = -SbInfo.nPos;
-		MoveWindow(HelpTextWindow, textPosX, textPosY, 1800, 1800, TRUE);
+		MoveWindow(HelpTextWindow, textPosX, textPosY, 1000, 1800, TRUE);
 		break;
 		
 	default:
