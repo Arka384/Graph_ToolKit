@@ -133,6 +133,7 @@
     <ClCompile Include="EdgeManager.cpp" />
     <ClCompile Include="File_IO.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpringEmbedder.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexManager.cpp" />
     <ClCompile Include="VisualizationManager.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="EdgeManager.hpp" />
     <ClInclude Include="File_IO.hpp" />
     <ClInclude Include="ControlIDs.hpp" />
+    <ClInclude Include="SpringEmbedder.hpp" />
     <ClInclude Include="Vertex.hpp" />
     <ClInclude Include="VertexManager.hpp" />
     <ClInclude Include="VisualizationManager.hpp" />

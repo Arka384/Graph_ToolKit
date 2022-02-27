@@ -3,6 +3,9 @@
 #include <Windows.h>
 #include <WinUser.h>
 
+//testing for spring embedder
+#include "SpringEmbedder.hpp"
+
 /*
 	Add how to info properly.
 	change the name of childClass window class
@@ -70,6 +73,8 @@ VertexManager V;
 EdgeManager E;
 File_IO FIO;
 VisualizationManager VisualM;
+//test
+SpringEmbedder SEM;
 
 void restoreProfile(void);
 
@@ -160,6 +165,9 @@ void addMenu(HWND hwnd) {
 	AppendMenu(HelpMenu, MF_STRING, ID_HOWTOUSE, "How to use");
 	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)HelpMenu, "Help");
 
+	//spring embedder layout menu
+	AppendMenu(hMenu, MF_STRING, ID_NEWLAYOUT, "New Layout");
+
 	SetMenu(hwnd, hMenu);
 }
 
@@ -217,6 +225,9 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 		case ID_CLEAR:
 			E.reset();
 			V.reset();
+			//when import newly then clear acc vectors of spring embedder
+			SEM.xAcc.clear();
+			SEM.yAcc.clear();
 			break;
 
 		////File io control menu
@@ -227,6 +238,7 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			FIO.create_adj_matrix(V, E);
 			FIO.writeInFile(V.current_vertices);
 			break;
+
 		case ID_IMPORT:
 			id = MessageBox(handle, TEXT("Make sure to apply appropriate graph settings before importing graph from file. Do you wish to continue ?"),
 				TEXT("Warning"), MB_YESNO);
@@ -309,6 +321,13 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			temp = fileLine.c_str();
 			SetWindowText(HelpTextWindow, temp);
 			//std::cout << temp;
+			break;
+
+		case ID_NEWLAYOUT:
+			//this menu changes the layout of the graph using spring embedder
+			FIO.create_adj_matrix(V, E);
+			SEM.getWorkingForces(FIO.adj_matrix, V, E);
+			//apply force is being called internally
 			break;
 		
 		default:

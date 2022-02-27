@@ -5,6 +5,7 @@ constexpr int ID_EXPORT = 2;
 constexpr int ID_EDITOROPTIONS = 3;
 
 constexpr int ID_HOWTOUSE = 5;
+constexpr int ID_NEWLAYOUT = 6;
 
 constexpr int ID_ADDEDGE = 10;
 constexpr int ID_DELEDGE = 11;
