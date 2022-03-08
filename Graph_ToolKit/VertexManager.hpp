@@ -24,6 +24,8 @@ public:
 	std::list<Vertex> vertices;
 	sf::Color vertexColor = sf::Color::Red, nameTextColor = sf::Color::Black;
 
+	sf::Vector2i initialPos, lastPos;
+
 	void load(void);
 	void createVertex(void);
 	int deleteVertex(void);

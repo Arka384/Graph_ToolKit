@@ -1,20 +1,48 @@
-﻿  main.cpp
+﻿  EdgeManager.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(9): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(11): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(62): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(71): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(33): warning C4101: 'e': unreferenced local variable
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(127): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(167): warning C4101: 'e': unreferenced local variable
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\edgemanager.cpp(240): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  File_IO.cpp
+  main.cpp
 c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(561): warning C4101: 'sInfo': unreferenced local variable
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(593): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(706): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(714): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(722): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(730): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(747): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(755): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(763): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(771): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(817): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(825): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\springembedder.hpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(589): warning C4101: 'sInfo': unreferenced local variable
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(621): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(734): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(742): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(750): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(758): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(775): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(783): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(791): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(799): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(845): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(853): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+  SpringEmbedder.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\springembedder.hpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\springembedder.cpp(5): warning C4101: 'forceForI': unreferenced local variable
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\springembedder.cpp(5): warning C4101: 'temp': unreferenced local variable
+  VertexManager.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\vertexmanager.cpp(7): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\vertexmanager.cpp(25): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\vertexmanager.cpp(101): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\vertexmanager.cpp(134): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  VisualizationManager.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.cpp(19): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.cpp(21): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   Generating code
-  2 of 559 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  142 of 661 functions (21.5%) were compiled, the rest were copied from previous compilation.
+    102 functions were new in current compilation
+    100 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\Graph_ToolKit.exe

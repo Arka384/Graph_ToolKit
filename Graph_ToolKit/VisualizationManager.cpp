@@ -48,13 +48,13 @@ void VisualizationManager::bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 	}
 
 	int x = queue.front();
+	//std::cout << x << " ";
 
 	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
 		if (k->numbering == x) {
 			k->shape.setFillColor(highlightColour);
 			traverse.push_back(*k);
-		}
-			
+		}	
 	}
 
 	queue.pop_front();
@@ -65,6 +65,7 @@ void VisualizationManager::bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 		{
 			visited[i] = true;
 			queue.push_back(i);
+			//std::cout << i << " ";
 		}
 	}
 }

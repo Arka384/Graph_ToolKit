@@ -173,6 +173,7 @@ void addMenu(HWND hwnd) {
 
 LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
 	int id = 0;
+	int count = 20;
 	std::string fileLine;
 	switch (message)
 	{
@@ -324,9 +325,17 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 			break;
 
 		case ID_NEWLAYOUT:
-			//this menu changes the layout of the graph using spring embedder
+			////this menu changes the layout of the graph using spring embedder
+			//while (count > 0) {	//perform 10 iterations on every call
+			//	FIO.create_adj_matrix(V, E);
+			//	SEM.getWorkingForces(FIO.adj_matrix, V, E);
+			//	count--;
+			//}
+			//count = 10;
+
 			FIO.create_adj_matrix(V, E);
 			SEM.getWorkingForces(FIO.adj_matrix, V, E);
+
 			//apply force is being called internally
 			break;
 		
