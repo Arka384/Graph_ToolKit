@@ -2,23 +2,24 @@
 #include "ControlIDs.hpp"
 #include <Windows.h>
 #include <WinUser.h>
-
-//testing for spring embedder
 #include "SpringEmbedder.hpp"
 
 /*
-	Add how to info properly.
-	change the name of childClass window class
+	added source selector for bfs and dfs 
+
 */
 
 sf::Vector2i win32WindowSize = sf::Vector2i(1285, 720);
 sf::Vector2i sfmlWindowSize = sf::Vector2i(1080, 640);
 HINSTANCE instance = NULL;
 
-//win32 buttons and window handlers
+//win32 main window buttons and main window handlers
 HWND B_AddVertex, B_DeleteVertex;	//vertex buttons
 HWND B_AddEdge, B_DelEdge;	//edge buttons
 HWND B_Settings, B_Clear;	//Settings
+//handlers for main window text boxes
+HWND Add_E_textBox1, Add_E_textBox2, Add_EW_textBox1;
+HWND Del_E_textBox1, Del_E_textBox2;
 
 //editor settings window handlers
 HWND EditorWindow, B_EditorClose;
@@ -30,6 +31,9 @@ HWND CheckBox_V_scatter;
 HWND VisualSettingWindow, B_VS_Save;
 HWND COMBO_VS_Colour, COMBO_VS_Speed;
 HWND ShowMatrixWindow, SM_textbox;
+HWND SearchAlgoWindow, SA_textboxSource;
+HWND SA_LableSource, SA_textBoxSource, B_SA_Apply;
+int algoSelected = -1;	//1->BFS, 2->DFS
 HWND ShortestPathWindow, SP_textBoxSource, SP_textBoxDest, B_SP_Apply;
 
 //graph settings window handlers
@@ -44,9 +48,7 @@ int textPosX = 0, textPosY = 0;
 
 //handlers for win32 menu
 HMENU hMenu;
-//handlers for text boxes
-HWND Add_E_textBox1, Add_E_textBox2, Add_EW_textBox1;
-HWND Del_E_textBox1, Del_E_textBox2;
+
 
 //window closed flags
 bool ParentClosed = false;
@@ -56,6 +58,7 @@ bool editorWindowOpen = false;
 bool VsSettingsOpen = false;
 bool SpWindowOpen = false;
 
+//profile related constants and other things
 const TCHAR *colors[] = { TEXT("Red"), TEXT("Dark Gold"), TEXT("Green"), TEXT("Teal"), TEXT("Purple"), TEXT("Lemon Chiffon"),
 	TEXT("Sandy Brown"), TEXT("Ivory"), TEXT("White"), TEXT("Black"), TEXT("Orange Red"), TEXT("Olive"), TEXT("Colcolate"), TEXT("Rosy Brown"),
 	TEXT("Light Pink"), TEXT("Slate Gray") };
@@ -69,14 +72,12 @@ const int nColors = 16;
 const int profileSize = 11;
 int currentProfile[profileSize] = { 0 };
 
+//creating objects of helper classes
 VertexManager V;
 EdgeManager E;
 File_IO FIO;
 VisualizationManager VisualM;
-//test
 SpringEmbedder SEM;
-
-void restoreProfile(void);
 
 bool EdgeSynch = false;
 int deletedVertex = 0;
@@ -86,7 +87,8 @@ std::string adjString;
 
 ////window class creating function
 void setWindowClassParam(WNDCLASS &wndClass, HINSTANCE currInstance);
-///////////
+///////////other function prototypes
+void restoreProfile(void);
 sf::Color selectColour(int index);
 float selectSize(int index);
 float selectVertexSize(int index);
@@ -94,7 +96,7 @@ float selectEdgeSize(int index);
 int selectSpeed(int index);
 void getTextHeight(HWND handle);
 
-//thread handlers and functions
+//thread handlers and visulaization functions
 HANDLE ThreadBfs, ThreadDfs, ThreadBfsSP;
 DWORD WINAPI BFS(LPVOID param) {
 	VisualM.onProgress = true;
@@ -102,7 +104,7 @@ DWORD WINAPI BFS(LPVOID param) {
 		VisualM.bfs(FIO.adj_matrix, V, E, FIO.matrixBaseIndex, dt);
 		sf::sleep(sf::milliseconds(VisualM.sleepTime));
 	}
-	VisualM.getTraversed();
+	VisualM.getTraversed(static_cast<int>(1));
 	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
 	VisualM.showingTraverse = false;
 	VisualM.reset(V);
@@ -115,7 +117,7 @@ DWORD WINAPI DFS(LPVOID param) {
 		VisualM.dfs(FIO.adj_matrix, V, E, FIO.matrixBaseIndex, dt);
 		sf::sleep(sf::milliseconds(VisualM.sleepTime));
 	}
-	VisualM.getTraversed();
+	VisualM.getTraversed(static_cast<int>(2));
 	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
 	VisualM.showingTraverse = false;
 	VisualM.reset(V);
@@ -136,7 +138,7 @@ DWORD WINAPI bfsShortestPath(LPVOID param) {
 }
 
 
-
+//menu creator
 void addMenu(HWND hwnd) {
 	HMENU FileSubMenu = CreateMenu();
 	HMENU ToolsSubMenu = CreateMenu();
@@ -253,12 +255,35 @@ LRESULT CALLBACK ProcessMessageMain(HWND handle, UINT message, WPARAM wparam, LP
 
 		//visualization tools and menu handles
 		case ID_VISUALIZEBFS:
+			algoSelected = 1;	//flag for bfs
 			FIO.create_adj_matrix(V, E);
-			ThreadBfs = CreateThread(0, 0, BFS, NULL, 0, NULL);
+			//dynamically creating the param collector for bfs
+			SearchAlgoWindow = CreateWindow(TEXT("VS_Show_Algo"), TEXT("Algorithm details"), WS_VISIBLE | WS_SYSMENU, 500, 200,
+				300, 200, NULL, NULL, instance, NULL);
+			SA_LableSource = CreateWindow(TEXT("STATIC"), TEXT("Source:"), WS_VISIBLE | WS_CHILD, 8, 20, 100, 20,
+				SearchAlgoWindow, NULL, instance, NULL);
+			SA_textBoxSource = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 120, 18,
+				100, 25, SearchAlgoWindow, (HMENU)ID_SA_SOURCE, instance, NULL);
+			B_SA_Apply = CreateWindow(TEXT("BUTTON"), TEXT("Apply"), WS_VISIBLE | WS_CHILD | WS_BORDER, 202, 110,
+				70, 35, SearchAlgoWindow, (HMENU)ID_SA_APPLY, instance, NULL);
+
+			//thread BFS is being called from the Callback of SearchAlgoWindow
 			break;
+
 		case ID_VISUALIZEDFS:
+			algoSelected = 2;	//flag for dfs
 			FIO.create_adj_matrix(V, E);
-			ThreadDfs = CreateThread(0, 0, DFS, NULL, 0, NULL);
+			//dynamically creating the param collector for bfs
+			SearchAlgoWindow = CreateWindow(TEXT("VS_Show_Algo"), TEXT("Algorithm details"), WS_VISIBLE | WS_SYSMENU, 500, 200,
+				300, 200, NULL, NULL, instance, NULL);
+			SA_LableSource = CreateWindow(TEXT("STATIC"), TEXT("Source:"), WS_VISIBLE | WS_CHILD, 8, 20, 100, 20,
+				SearchAlgoWindow, NULL, instance, NULL);
+			SA_textBoxSource = CreateWindow(TEXT("EDIT"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 120, 18,
+				100, 25, SearchAlgoWindow, (HMENU)ID_SA_SOURCE, instance, NULL);
+			B_SA_Apply = CreateWindow(TEXT("BUTTON"), TEXT("Apply"), WS_VISIBLE | WS_CHILD | WS_BORDER, 202, 110,
+				70, 35, SearchAlgoWindow, (HMENU)ID_SA_APPLY, instance, NULL);
+
+			//thread DFS is being called from the Callback of SearchAlgoWindow
 			break;
 
 		case ID_SHOWMATRIX:
@@ -385,7 +410,6 @@ LRESULT CALLBACK SettingsProcessMessage(HWND handle, UINT message, WPARAM wparam
 }
 
 LRESULT CALLBACK EditorProcessMessages(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
-
 	switch (message)
 	{
 	case WM_CREATE:
@@ -472,8 +496,8 @@ LRESULT CALLBACK EditorProcessMessages(HWND handle, UINT message, WPARAM wparam,
 	return DefWindowProc(handle, message, wparam, lparam);
 }
 
+//callback method for Visualization settings window
 LRESULT CALLBACK VSProcessedMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
-
 	switch (message)
 	{
 	case WM_COMMAND:
@@ -506,8 +530,7 @@ LRESULT CALLBACK VSProcessedMessage(HWND handle, UINT message, WPARAM wparam, LP
 	return DefWindowProc(handle, message, wparam, lparam);
 }
 
-LRESULT CALLBACK ShowMatProcessedMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
-	
+LRESULT CALLBACK ShowMatProcesseMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
 	switch (message)
 	{
 	case WM_CREATE:
@@ -517,6 +540,31 @@ LRESULT CALLBACK ShowMatProcessedMessage(HWND handle, UINT message, WPARAM wpara
 	}
 
 	return DefWindowProc(handle, message, wparam, lparam);	
+}
+
+//callback for source selector window of bfs and dfs (ShowAlgoWindow)
+LRESULT CALLBACK ShowAlgoProcesseMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
+	switch (message)
+	{
+	case WM_COMMAND:
+		char src[3];
+		if (wparam == ID_SA_APPLY) {
+			GetWindowText(SA_textBoxSource, src, 3);
+			VisualM.getInputSA(src, V.usingAlpha, V.startFromZero);
+			SetWindowText(SA_textBoxSource, "");
+			//to support both BFS and DFS from one function Using a flag
+			if(algoSelected == 1)	//bfs
+				ThreadBfs = CreateThread(0, 0, BFS, NULL, 0, NULL);
+			else if (algoSelected == 2)
+				ThreadDfs = CreateThread(0, 0, DFS, NULL, 0, NULL);
+
+			DestroyWindow(SearchAlgoWindow);
+		}
+
+	default:
+		break;
+	}
+	return DefWindowProc(handle, message, wparam, lparam);
 }
 
 LRESULT CALLBACK ShortestPathParamMessage(HWND handle, UINT message, WPARAM wparam, LPARAM lparam) {
@@ -859,10 +907,18 @@ int main()
 	//Show matirx window
 	WNDCLASS VS_ShowMatrix;
 	setWindowClassParam(VS_ShowMatrix, instance);
-	VS_ShowMatrix.lpfnWndProc = &ShowMatProcessedMessage;
+	VS_ShowMatrix.lpfnWndProc = &ShowMatProcesseMessage;
 	VS_ShowMatrix.lpszClassName = TEXT("VS_Show_Matrix");
 	RegisterClass(&VS_ShowMatrix);
 	//creating the window is handled in callback of main parent window
+
+	////////////////////////////////////////////////
+	///////param collector window for bfs and dfs ///ShowAlgo window
+	WNDCLASS VS_ShowAlgo;
+	setWindowClassParam(VS_ShowAlgo, instance);
+	VS_ShowAlgo.lpfnWndProc = &ShowAlgoProcesseMessage;
+	VS_ShowAlgo.lpszClassName = TEXT("VS_Show_Algo");
+	RegisterClass(&VS_ShowAlgo);
 
 
 	////////////////////////////////////////////////
@@ -914,12 +970,12 @@ int main()
 			time = clk.restart();
 			dt = time.asSeconds();
 
+			//sfml updates
 			V.updateVertices(sfmlWindow);
 			E.updateEdge(V.vertices);
 
-
 			sfmlWindow.clear();
-
+			//sfml drawings
 			E.renderEdge(sfmlWindow);
 			V.renderVertices(sfmlWindow);
 			VisualM.displayStatus(sfmlWindow);

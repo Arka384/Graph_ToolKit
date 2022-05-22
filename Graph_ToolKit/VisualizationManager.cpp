@@ -19,17 +19,17 @@ VisualizationManager::VisualizationManager(void)
 	statusText.setCharacterSize(20.f);
 	traverseText.setFont(font);
 	traverseText.setCharacterSize(20.f);
-	//to make non zero size
-	queue.push_back(s);
-	stack.push_back(s);
+	//to make non zero size. If queue size is 0 then thread functions will end immediately.
+	queue.push_back(source);
+	stack.push_back(source);
 }
 
 void VisualizationManager::reset(VertexManager &v)
-{
+{	//reset after bfs of dfs visualization is performed
 	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++)
 		k->shape.setFillColor(v.vertexColor);
-	queue.push_back(s);
-	stack.push_back(s);
+	queue.push_back(source);
+	stack.push_back(source);
 	traverse.clear();
 	for (int i = 0; i < maxSize; i++)
 		visited[i] = false;
@@ -37,18 +37,36 @@ void VisualizationManager::reset(VertexManager &v)
 	show_statusText = false;
 }
 
+void VisualizationManager::getInputSA(char * a, bool usingAlpha, bool startFromZero)
+{	//get input form source selector of bfs and dfs
+	source = -1;
+	try {
+		if (usingAlpha) {
+			if (islower(*a) != 0)
+				*a = toupper(*a);
+			source = static_cast<int>(*a) - 65;
+		}
+		else {
+			source = std::atoi(a);
+		}
+	}
+	catch (const std::invalid_argument &ex) {
+		std::cout << ex.what();
+	}
+
+	//std::cout << source << " " << "\n";
+}
+
 void VisualizationManager::bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt)
-{
+{	//this has to be synced with treads so no loops here
 	if (!executed) {
-		s = baseIndex;
-		visited[s] = true;
+		visited[source] = true;
 		queue.clear();
-		queue.push_back(s);
+		queue.push_back(source);
 		executed = true;
 	}
 
 	int x = queue.front();
-	//std::cout << x << " ";
 
 	for (auto k = v.vertices.begin(); k != v.vertices.end(); k++) {
 		if (k->numbering == x) {
@@ -65,24 +83,22 @@ void VisualizationManager::bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 		{
 			visited[i] = true;
 			queue.push_back(i);
-			//std::cout << i << " ";
 		}
 	}
 }
 
 void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt)
-{
+{	//this has to be synced with treads so no loops here
 	if (!executed) {
-		s = baseIndex;
-		visited[s] = true;
+		visited[source] = true;
 		stack.clear();
-		stack.push_back(s);
-		traverse.push_back(v.vertices.front());
+		stack.push_back(source);
+		//traverse.push_back(v.vertices.front());
+
 		executed = true;
 	}
 
 	int i;
-
 	int x = stack.back();
 
 	if (!visited[x]) {
@@ -101,7 +117,6 @@ void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 		if (adjMatrix[x][i] == 1 && visited[i] == false)
 		{
 			stack.push_back(i);
-			//visited[i] = true;
 			break;
 		}
 	}
@@ -124,8 +139,6 @@ void VisualizationManager::dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager 
 
 
 //this function gets the input for finding shortest paths
-/////modification needed
-	//only working for normal numbering and not with usingAlpha and StartFromZero
 void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha, bool startFromZero)
 {
 	src = dest = 0;
@@ -147,8 +160,6 @@ void VisualizationManager::getInputSP(char * a, char * b, bool usingAlpha, bool 
 		std::cout << ex.what();
 	}
 
-	//std::cout << src << " " << dest << "\n";
-
 }
 
 //this function uses bfs to find shortest path. Just a slight modification on the normal bfs
@@ -162,7 +173,6 @@ void VisualizationManager::bfsPathFind(int(&adjMatrix)[maxSize][maxSize], Vertex
 	}
 
 	int x = queue.front();
-	//traverse.push_back(x);
 	queue.pop_front();
 
 	for (int i = baseIndex; i <= v.current_vertices; i++)
@@ -179,7 +189,7 @@ void VisualizationManager::bfsPathFind(int(&adjMatrix)[maxSize][maxSize], Vertex
 	
 }
 
-//this function is to get the right path after using bfsPathFind
+//this function is to get the final path after using bfs shortest path
 void VisualizationManager::getPath(int * pred, VertexManager &v)
 {
 	showingTraverse = true;
@@ -217,8 +227,10 @@ void VisualizationManager::getPath(int * pred, VertexManager &v)
 }
 
 //this is for getting the traverse string after BFS or DFS
-void VisualizationManager::getTraversed(void)
-{
+void VisualizationManager::getTraversed(int algoSelected)
+{	//algoSelected = 1 for bfs
+	//			   = 2 for dfs
+
 	onProgress = false;
 	showingTraverse = true;
 	std::string traverseString = "";
@@ -230,6 +242,13 @@ void VisualizationManager::getTraversed(void)
 		traverseString.append(sstream.str());
 		//if(traverse.back() != *i)
 			traverseString.append("->");
+	}
+	
+	//a special case for dfs.// just to add the source in front
+	if (algoSelected == 2) {
+		std::string TempStringWithSource = std::to_string(source) + "->";
+		TempStringWithSource.append(traverseString);
+		traverseString = TempStringWithSource;
 	}
 
 	traverseText.setString(traverseString);

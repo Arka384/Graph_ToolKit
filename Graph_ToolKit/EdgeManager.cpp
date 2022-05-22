@@ -56,13 +56,13 @@ void EdgeManager::createEdge(std::list<Vertex> &vertices, char *a, char *b, char
 				{
 					float dx = j->shape.getPosition().x - i->shape.getPosition().x;
 					float dy = j->shape.getPosition().y - i->shape.getPosition().y;
-					float dist = (dx*dx + dy * dy);
+					float dist = (dx*dx + dy*dy);
 					dist = std::sqrt(dist);	//this is the distance between the two balls in which the edge is
-					float angle = std::atan2(dy, dx);	//this is the angle of rotation for the edge to be inside the balls
+					float angle = std::atan2(dy, dx);	//this is the angle of rotation for the edge to be inside the balls (yeah balls...)
 					angle = angle * (180 / 3.1415);
 
-					Edge temp;
-
+					Edge temp;	//create an edge object then initialize and then add to existing edges list.
+					
 					std::stringstream ss;
 					ss << copy_w;
 					temp.weight_text = w_text;
@@ -95,7 +95,8 @@ void EdgeManager::createEdge(std::list<Vertex> &vertices, char *a, char *b, char
 }
 
 void EdgeManager::removeRedundantEdge(int DeletedVertexNumber)
-{
+{	//delets the redundent edge where there's no vertex associated with it.
+
 	for (auto k = edges.begin(); k != edges.end(); k++) {
 		if (k->v1 == DeletedVertexNumber || k->v2 == DeletedVertexNumber) {
 			k->RM_FLAG = true;

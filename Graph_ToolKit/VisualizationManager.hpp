@@ -10,7 +10,7 @@ private:
 	std::string statusString = "Backtracking from: ";
 	sf::Color highlightColour = sf::Color::Yellow;
 	float timer = 0, timeLimit = 0.2;
-	int s = 0;
+	int source = 0;
 	int src = 0, dest = 0;	//for Shortest Path
 	std::list<int> queue;
 	std::list<int> stack;
@@ -32,12 +32,13 @@ public:
 
 	VisualizationManager(void);
 	void reset(VertexManager &v);
+	void getInputSA(char *a, bool usingAlpha, bool startFromZero);
 	void bfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
 	void dfs(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex, float dt);
 	void getInputSP(char *a, char *b, bool usingAlpha, bool startFromZero);
 	void bfsPathFind(int(&adjMatrix)[maxSize][maxSize], VertexManager &v, EdgeManager &e, int baseIndex);
 	void getPath(int *pred, VertexManager &v);
-	void getTraversed(void);
+	void getTraversed(int);
 	void changeHighlightColour(sf::Color colour);
 	void changeSpeed(int speed);
 	int getQueueSize(void);
