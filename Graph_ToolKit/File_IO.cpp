@@ -68,7 +68,16 @@ void File_IO::reset() {
 
 void File_IO::writeInFile(int current_vertices)
 {
-	std::ofstream output("output.txt");
+	std::time_t time = std::time(0);
+	std::tm *now = std::localtime(&time);
+	//formatting output file name
+	std::string outFileName = "Saved Graphs/";
+	outFileName.append(std::to_string(now->tm_mday) + "-" + std::to_string(now->tm_mon) + "-" + std::to_string(now->tm_year + 1900) + " ");
+	outFileName.append(std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec));
+	outFileName.append(".txt");
+	//std::cout << outFileName << "\n";
+
+	std::ofstream output(outFileName);
 	for (int i = matrixBaseIndex; i <= current_vertices; i++)
 	{
 		for (int j = matrixBaseIndex; j <= current_vertices; j++)

@@ -1,6 +1,9 @@
 #pragma once
+#pragma warning(disable : 4996)
+
 #include "EdgeManager.hpp"
 #include <fstream>
+#include <ctime>
 constexpr int GL_ArraySize = 40;
 
 class File_IO

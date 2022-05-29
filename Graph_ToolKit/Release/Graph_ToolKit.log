@@ -1,21 +1,15 @@
-﻿  main.cpp
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\visualizationmanager.hpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\springembedder.hpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(643): warning C4101: 'sInfo': unreferenced local variable
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(675): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(788): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(796): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(804): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(812): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(829): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(837): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(845): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(853): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(899): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
-c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\main.cpp(907): warning C4302: 'type cast': truncation from 'const TCHAR *' to 'TCHAR'
+﻿  File_IO.cpp
   Generating code
-  1 of 668 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  3 of 677 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    25 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
+Edge.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'Edge.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
+EdgeManager.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'EdgeManager.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
+File_IO.obj : warning LNK4020: a type record in 'c:\users\arkad\documents\deadshot files\c++ programs\sfml\projects\graph_toolkit\graph_toolkit\release\vc141.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+main.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'main.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
+SpringEmbedder.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'SpringEmbedder.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
+Vertex.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'Vertex.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
+VertexManager.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'VertexManager.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
+VisualizationManager.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'VisualizationManager.obj' or at 'C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\vc141.pdb'; linking object as if no debug info
   Graph_ToolKit.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\Projects\Graph_ToolKit\Release\Graph_ToolKit.exe
