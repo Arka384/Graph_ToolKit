@@ -11,3 +11,5 @@ You can even save your current graph as adjacent matrix and load it later. Direc
 
 
 <h3>You can also customize every single property of your graph.</h3>
+
+![Screenshot](https://github.com/Arka384/Graph_ToolKit/blob/main/ScreenShots/Screenshot%202022-11-07%20200130.png)
